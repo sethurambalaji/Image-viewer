@@ -1,0 +1,13 @@
+.login-card-container{
+    display: flex;
+    justify-content: center;    
+}
+.redError{
+    color:red;
+}
+.dispNone{
+    display: none;
+}
+.dispBlock{
+    display: block;
+}
