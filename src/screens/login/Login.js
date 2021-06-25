@@ -44,14 +44,15 @@ class Login extends Component {
     loginValidationHandler = () =>{
         let username = this.state.username 
         let password =  this.state.password
-        let authenticatedUsername = "admin"
-        let authenticatedPassword = "8055"
+        let mockUsername = "admin"
+        let mockPassword = "8055"
+        let accessToken = "IGQVJVbjdZATkF3emhUdlEzNUJmUDJKMW9Iay1WMGEtS1FoYW40ZAzVKQmxiX0d3Q3oyMVducnRSNjdUeENOdmVlTVZAjQ2JabnFXWS05Ui1sRUh0d20tNTJYYmtBNjI5bzVfX1BOcG02UmFhcFl4LU1RVgZDZD"
         if(username===""||password==="") {
             username === "" ? this.setState({usernameRequired:'dispBlock'}) : this.setState({usernameRequired:'dispNone'});
             password === "" ? this.setState({passwordRequired:'dispBlock'}) : this.setState({passwordRequired:'dispNone'});
         }
         else{
-            if(authenticatedUsername===username && authenticatedPassword===password){
+            if(mockUsername===username && mockPassword===password){
                 ReactDOM.render(<Home/>,document.getElementById("root"))
             }
             else{
