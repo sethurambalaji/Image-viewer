@@ -33,44 +33,44 @@ class Login extends Component {
 
             username: "",
             password: "",
-            usernameRequired : 'dispNone',
-            passwordRequired : 'dispNone',
-            loginAuthentication:'dispNone',
+            usernameRequired: 'dispNone',
+            passwordRequired: 'dispNone',
+            loginAuthentication: 'dispNone',
         };
     }
 
-    
-    
-    loginValidationHandler = () =>{
-        let username = this.state.username 
-        let password =  this.state.password
+
+
+    loginValidationHandler = () => {
+        let username = this.state.username
+        let password = this.state.password
         let mockUsername = "admin"
         let mockPassword = "8055"
         let accessToken = "IGQVJVbjdZATkF3emhUdlEzNUJmUDJKMW9Iay1WMGEtS1FoYW40ZAzVKQmxiX0d3Q3oyMVducnRSNjdUeENOdmVlTVZAjQ2JabnFXWS05Ui1sRUh0d20tNTJYYmtBNjI5bzVfX1BOcG02UmFhcFl4LU1RVgZDZD"
-        if(username===""||password==="") {
-            username === "" ? this.setState({usernameRequired:'dispBlock'}) : this.setState({usernameRequired:'dispNone'});
-            password === "" ? this.setState({passwordRequired:'dispBlock'}) : this.setState({passwordRequired:'dispNone'});
+        if (username === "" || password === "") {
+            username === "" ? this.setState({ usernameRequired: 'dispBlock' }) : this.setState({ usernameRequired: 'dispNone' });
+            password === "" ? this.setState({ passwordRequired: 'dispBlock' }) : this.setState({ passwordRequired: 'dispNone' });
         }
-        else{
-            if(mockUsername===username && mockPassword===password){
-                ReactDOM.render(<Home/>,document.getElementById("root"))
+        else {
+            if (mockUsername === username && mockPassword === password) {
+                this.props.history.push('/home');
             }
-            else{
-                this.setState({loginAuthentication:"dispBlock"})
+            else {
+                this.setState({ loginAuthentication: "dispBlock" })
             }
         }
-       
+
     }
 
-    usernameInputChangeHandler = (e) =>{
-        this.setState({username : e.target.value})
-        this.setState({usernameRequired:'dispNone'})
-                
+    usernameInputChangeHandler = (e) => {
+        this.setState({ username: e.target.value })
+        this.setState({ usernameRequired: 'dispNone' })
+
     }
 
     passwordInputChangeHandler = (e) => {
-        this.setState({password : e.target.value})
-        this.setState({passwordRequired:'dispNone'})
+        this.setState({ password: e.target.value })
+        this.setState({ passwordRequired: 'dispNone' })
     }
 
 
@@ -86,11 +86,11 @@ class Login extends Component {
                                 <Typography gutterBottom variant="h5" component="h2">
                                     LOGIN
                                 </Typography>
-                            </FormControl><br/>
+                            </FormControl><br />
 
                             <FormControl className={classes.formControl} required>
                                 <InputLabel htmlFor="userName">Username</InputLabel>
-                                <Input id="userName" type="text" username={this.state.username} onChange={this.usernameInputChangeHandler}/>
+                                <Input id="userName" type="text" username={this.state.username} onChange={this.usernameInputChangeHandler} />
                                 <FormHelperText className={this.state.usernameRequired}>
                                     <span className='redError'>required</span>
                                 </FormHelperText>
@@ -106,7 +106,7 @@ class Login extends Component {
 
                             <FormHelperText className={this.state.loginAuthentication}>
                                 <span className='redError' authentication={this.state.loginAuthentication}>Incorrect username and/or password</span>
-                            </FormHelperText><br/>
+                            </FormHelperText><br />
 
                             <Button variant='contained' color='primary'
                                 style={{ textAlign: 'center' }}
