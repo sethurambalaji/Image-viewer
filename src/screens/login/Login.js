@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import '../login/Login.css'
+import Home from '../home/Home';
 import Header from '../../common/header/Header';
 import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
@@ -33,40 +35,41 @@ class Login extends Component {
             password: "",
             usernameRequired : 'dispNone',
             passwordRequired : 'dispNone',
-            loginAuthentication:'dispNone'
+            loginAuthentication:'dispNone',
         };
     }
 
-    setUserAndPasswordState = (username,password) => {
-        username === "" ? this.setState({usernameRequired:'dispBlock'}) : this.setState({usernameRequired:'dispNone'});
-        password === "" ? this.setState({passwordRequired:'dispBlock'}) : this.setState({passwordRequired:'dispNone'});
-    }
+    
     
     loginValidationHandler = () =>{
         let username = this.state.username 
         let password =  this.state.password
+        let authenticatedUsername = "admin"
+        let authenticatedPassword = "8055"
         if(username===""||password==="") {
-            this.setUserAndPasswordState(username,password);
+            username === "" ? this.setState({usernameRequired:'dispBlock'}) : this.setState({usernameRequired:'dispNone'});
+            password === "" ? this.setState({passwordRequired:'dispBlock'}) : this.setState({passwordRequired:'dispNone'});
         }
-        else if(username.usernameRequired!=="dispNone"||password.passwordRequired!=="dispNone"){
-            this.setUserAndPasswordState(username,password);
+        else{
+            if(authenticatedUsername===username && authenticatedPassword===password){
+                ReactDOM.render(<Home/>,document.getElementById("root"))
+            }
+            else{
+                this.setState({loginAuthentication:"dispBlock"})
+            }
         }
-    }
-
-    usernameInputChangeHandler = (e) =>{
-        this.setState({username : e.target.value})         
-    }
-
-    passwordInputChangeHandler = (e) => {
-        this.setState({password : e.target.value})
+       
     }
 
     usernameInputChangeHandler = (e) =>{
         this.setState({username : e.target.value})
+        this.setState({usernameRequired:'dispNone'})
+                
     }
 
     passwordInputChangeHandler = (e) => {
         this.setState({password : e.target.value})
+        this.setState({passwordRequired:'dispNone'})
     }
 
 
