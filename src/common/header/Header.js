@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { Component } from 'react';
 import '../header/Header.css'
 
-import InputBase from '@material-ui/core/InputBase';
+import Input from '@material-ui/core/Input';
+import { InputAdornment } from '@material-ui/core';
 import { fade, makeStyles } from '@material-ui/core/styles';
 
 import SearchIcon from '@material-ui/icons/Search';
@@ -66,18 +67,16 @@ export default function Header() {
     return (
         <div className="header">
             <span className="logo">Image Viewer</span>
-            <div className={classes.search+" searchBar"}>
-                <div className={classes.searchIcon}>
-                    <SearchIcon />
-                </div>
-                <InputBase
-                    placeholder="Search…"
-                    classes={{
-                        root: classes.inputRoot,
-                        input: classes.inputInput,
-                    }}
-                    inputProps={{ 'aria-label': 'search' }}
-                />
+            <div className={classes.search + " searchBar"}>
+                <Input className='search'
+                    type='search'
+                    placeholder='Search...'
+                    p={5}
+                    onChange={(e) => this.handleChange(e)}
+                    disableUnderline
+                    startAdornment={
+                        <InputAdornment position="start"> <SearchIcon /> </InputAdornment>
+                    } />
             </div>
         </div>
     );
