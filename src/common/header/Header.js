@@ -60,35 +60,7 @@ const useStyles = makeStyles((theme) => ({
         },
     },
 }));
-// class Header extends Component {
-//     constructor(){
-//         super()
 
-//     }
-
-//     render() {
-//         const classes = this.props;
-//         return (
-//             <div className="header">
-//                 <span className="logo">Image Viewer</span><br />
-//                 <div className={classes.search}>
-//                     <div className={classes.searchIcon}>
-//                         <SearchIcon />
-//                     </div>
-//                     <InputBase
-//                         placeholder="Search…"
-//                         classes={{
-//                             root: classes.inputRoot,
-//                             input:classes.inputInput,
-//                         }}
-//                         inputProps={{ 'aria-label': 'search' }}
-//                     />
-//                 </div>
-//             </div>
-//         )
-//     }
-// }
-// export default withStyles(useStyles)(Header);
 export default function Header() {
     const classes = useStyles();
     return (
