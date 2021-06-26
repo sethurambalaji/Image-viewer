@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import '../login/Login.css'
-import Home from '../home/Home';
 import Header from '../../common/header/Header';
 import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
@@ -53,6 +51,7 @@ class Login extends Component {
         }
         else {
             if (mockUsername === username && mockPassword === password) {
+                window.sessionStorage.setItem("access-token",accessToken);
                 this.props.history.push('/home');
             }
             else {
