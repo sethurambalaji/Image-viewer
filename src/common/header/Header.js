@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {  useEffect  , useState } from 'react';
 import '../header/Header.css'
 
 import Input from '@material-ui/core/Input';
@@ -64,20 +64,35 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Header() {
     const classes = useStyles();
+    const [searchText, searchContent] = useState("")
+    const [isLoggedIn,logging] = useState(false)
+    useEffect(() => {
+        logging(window.sessionStorage.getItem("access-token")===null?false:true)
+    });
+
     return (
-        <div className="header">
+        <div className="header" >
             <span className="logo">Image Viewer</span>
-            <div className={classes.search + " searchBar"}>
-                <Input className='search'
-                    type='search'
-                    placeholder='Search...'
-                    p={5}
-                    onChange={(e) => this.handleChange(e)}
-                    disableUnderline
-                    startAdornment={
-                        <InputAdornment position="start"> <SearchIcon /> </InputAdornment>
-                    } />
-            </div>
+            {
+                isLoggedIn ?
+                    <div className={classes.search + " searchBar"}>
+                        <Input className='search'
+                            type='search'
+                            placeholder='Search...'
+                            onChange={(e) => searchContent(e.target.value)}
+                            disableUnderline
+                            startAdornment={
+                                <InputAdornment position="start"> <SearchIcon /> </InputAdornment>
+                            }
+                            value={searchText}
+                        />
+                    </div>
+                    :
+                    <span/>
+
+            }
+
+
         </div>
     );
 }
