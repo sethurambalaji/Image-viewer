@@ -58,10 +58,18 @@ class Home extends Component {
         );
         xhr.send(data);
     };
+
+    searchImage = (searchImageCaption) => {
+        console.log(searchImageCaption)
+        // this.state.albumData.map((image) => {
+        //     return this.getImageDetailsById(image.id, image.caption);
+        // });
+    }
+    
     render() {
         return (
             <div>
-                <Header {...this.props} baseUrl={this.props.baseUrl}/>
+                <Header {...this.props} baseUrl={this.props.baseUrl} searchImage={this.searchImage}/>
                 <p>Home Page</p>
             </div>
         )

@@ -62,13 +62,17 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Header() {
+const Header = (props) => {
     const classes = useStyles();
-    const [searchText, searchContent] = useState("")
     const [isLoggedIn,logging] = useState(false)
     useEffect(() => {
         logging(window.sessionStorage.getItem("access-token")===null?false:true)
     });
+
+    function searchContentHandler(e) {
+        props.searchImage(e.target.value);
+        e.preventDefault();
+    }
 
     return (
         <div className="header" >
@@ -79,12 +83,11 @@ export default function Header() {
                         <Input className='search'
                             type='search'
                             placeholder='Search...'
-                            onChange={(e) => searchContent(e.target.value)}
+                            onChange={searchContentHandler}
                             disableUnderline
                             startAdornment={
                                 <InputAdornment position="start"> <SearchIcon /> </InputAdornment>
                             }
-                            value={searchText}
                         />
                     </div>
                     :
@@ -96,3 +99,4 @@ export default function Header() {
         </div>
     );
 }
+export default Header
