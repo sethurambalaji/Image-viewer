@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
 import '../home/Home.css'
 import Header from '../../common/header/Header';
+import GridList from '@material-ui/core/GridList';
+import GridListTile from '@material-ui/core/GridListTile';
+import GridListTileBar from '@material-ui/core/GridListTileBar';
 class Home extends Component {
     constructor() {
         super();
         this.state = {
             albumData: [],
-            imageDetails: []
+            imageDetails: [],
+            searchMode:false,
+            displayImages:[],
         }
 
     }
@@ -59,11 +64,24 @@ class Home extends Component {
         xhr.send(data);
     };
 
+    filterImages = (searchImageCaption) =>{
+
+        let filterImages=this.state.albumData
+
+        if(searchImageCaption.length!==0){
+            filterImages = filterImages.filter((image) =>{
+
+                return (typeof image.caption!=="undefined"&&image.caption.toUpperCase().includes(searchImageCaption.toUpperCase())) 
+            })
+            
+        } 
+        this.setState({displayImages:filterImages})
+    }
+
     searchImage = (searchImageCaption) => {
         console.log(searchImageCaption)
-        // this.state.albumData.map((image) => {
-        //     return this.getImageDetailsById(image.id, image.caption);
-        // });
+        this.setState({searchMode:true})
+        this.filterImages(searchImageCaption)
     }
     
     render() {
@@ -71,6 +89,15 @@ class Home extends Component {
             <div>
                 <Header {...this.props} baseUrl={this.props.baseUrl} searchImage={this.searchImage}/>
                 <p>Home Page</p>
+                <GridList cols={2}>
+                    {this.state.displayImages.map(post => (
+                        <GridListTile key={post.id}>
+                            {/* <img src={movie.poster_url} className="movie-poster" alt={movie.title} /> */}
+                            <GridListTileBar title={post.caption} />
+                        </GridListTile>
+                    ))}
+                </GridList>
+                
             </div>
         )
     }
