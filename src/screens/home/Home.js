@@ -8,10 +8,10 @@ class Home extends Component {
     constructor() {
         super();
         this.state = {
-            albumData: [],
-            imageDetails: [],
-            searchMode:false,
-            displayImages:[],
+            albumDataMaster: [],
+            albumDataCopy:[],
+            imageDetailsMaster: [],
+            imageDetailsCopy:[],
         }
 
     }
@@ -22,7 +22,8 @@ class Home extends Component {
         let that = this;
         xhr.addEventListener("readystatechange", function () {
             if (this.readyState === 4) {
-                that.setState({ albumData: JSON.parse(this.responseText).data });
+                that.setState({ albumDataMaster: JSON.parse(this.responseText).data });
+                that.setState({ albumDataCopy: JSON.parse(this.responseText).data });
                 // get the image details for each image post
                 that.getImageDetails();
             }
@@ -35,7 +36,7 @@ class Home extends Component {
         xhr.send(data);
     }
     getImageDetails = () => {
-        this.state.albumData.map((image) => {
+        this.state.albumDataMaster.map((image) => {
             return this.getImageDetailsById(image.id, image.caption);
         });
     };
@@ -48,7 +49,12 @@ class Home extends Component {
         xhr.addEventListener("readystatechange", function () {
             if (this.readyState === 4) {
                 that.setState({
-                    imageDetails: that.state.imageDetails.concat(
+                    imageDetailsMaster: that.state.imageDetailsMaster.concat(
+                        JSON.parse(this.responseText)
+                    ),
+                });
+                that.setState({
+                    imageDetailsCopy: that.state.imageDetailsCopy.concat(
                         JSON.parse(this.responseText)
                     ),
                 });
@@ -64,40 +70,50 @@ class Home extends Component {
         xhr.send(data);
     };
 
-    filterImages = (searchImageCaption) =>{
+    filterImages = (searchImageCaption) => {
 
-        let filterImages=this.state.albumData
+        let filterImages = this.state.albumDataMaster
 
-        if(searchImageCaption.length!==0){
-            filterImages = filterImages.filter((image) =>{
+        if (searchImageCaption.length !== 0) {
+            filterImages = filterImages.filter((image) => {
 
-                return (typeof image.caption!=="undefined"&&image.caption.toUpperCase().includes(searchImageCaption.toUpperCase())) 
+                return (typeof image.caption !== "undefined" && image.caption.toUpperCase().includes(searchImageCaption.toUpperCase()))
             })
-            
-        } 
-        this.setState({displayImages:filterImages})
+
+        }
+        this.setState({ albumDataCopy: filterImages })
     }
 
     searchImage = (searchImageCaption) => {
         console.log(searchImageCaption)
-        this.setState({searchMode:true})
         this.filterImages(searchImageCaption)
     }
+      
+ 
     
+   
     render() {
         return (
             <div>
-                <Header {...this.props} baseUrl={this.props.baseUrl} searchImage={this.searchImage}/>
+                <Header {...this.props} baseUrl={this.props.baseUrl} searchImage={this.searchImage} />
                 <p>Home Page</p>
-                <GridList cols={2}>
-                    {this.state.displayImages.map(post => (
-                        <GridListTile key={post.id}>
-                            {/* <img src={movie.poster_url} className="movie-poster" alt={movie.title} /> */}
-                            <GridListTileBar title={post.caption} />
-                        </GridListTile>
-                    ))}
-                </GridList>
+
                 
+                
+                <GridList cols={2}>
+                     {  
+                        this.state.albumDataCopy.map( (post) => (
+                            <GridListTile key={post.id}>
+                                
+                                <img src={post.media_url} alt={post.caption}/>
+                                <GridListTileBar title={post.media_url} />
+                                
+                            </GridListTile>
+                        ))
+                     }                   
+                </GridList>
+
+
             </div>
         )
     }
