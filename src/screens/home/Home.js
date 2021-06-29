@@ -11,10 +11,19 @@ import Divider from '@material-ui/core/Divider';
 import CardContent from '@material-ui/core/CardContent';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 
 const styles = theme => ({
     root: {
+        minWidth: 345,
+        maxHeight: 360,
+    },
+    card: {
+        margin: "10px",
         maxWidth: 345,
+        minWidth: "90%",
+        overflow: "visible"
     },
     media: {
         height: 0,
@@ -23,6 +32,11 @@ const styles = theme => ({
     avatar: {
         backgroundColor: "red",
     },
+    cardContent: {
+        minHeight: 300,
+        width: "80%",
+        height: "90%"
+    }
 });
 
 class Home extends Component {
@@ -33,6 +47,10 @@ class Home extends Component {
             albumDataCopy: [],
             imageDetailsMaster: [],
             imageDetailsCopy: [],
+            tags: "#upgrad #reactjs #imageviewer #user #image",
+            isLiked: "white",
+            likeCounter: 1,
+            isLikeLoaded:false,
         }
 
     }
@@ -120,7 +138,20 @@ class Home extends Component {
         imageData = this.state.albumDataCopy.find((post) => {
             return post.id === id;
         });
+        if (typeof imageData.caption === "undefined") {
+            imageData.caption = "No Caption - Please comment your views"
+        }
         return imageData.caption;
+    }
+
+    
+    likeCounterHandler = () => {
+        let likes = this.state.likeCounter
+       
+            likes = Math.floor(Math.random() * 100)
+         
+        
+       return likes;
     }
 
     render() {
@@ -129,12 +160,12 @@ class Home extends Component {
             <div>
                 <Header {...this.props} baseUrl={this.props.baseUrl} searchImage={this.searchImage} />
                 <div className="GridContainer">
-                    <GridList cols={2} cellHeight={480} spacing={6}>
+                    <GridList cols={2} cellHeight={600} spacing={1}>
                         {
                             this.state.imageDetailsCopy.map((post) => (
 
                                 <GridListTile key={post.id}>
-                                    <Card key={post.id} variant="outlined">
+                                    <Card key={post.id} variant="outlined" className={classes.card}>
                                         <CardHeader
                                             avatar={
                                                 <Avatar variant="circle" className={classes.avatar}>
@@ -144,12 +175,30 @@ class Home extends Component {
                                             title={post.username}
                                             subheader={new Date(post.timestamp).toLocaleString().replace(",", "")}
                                         />
-                                        <CardMedia style={{ height: 0, paddingTop: '80%', marginBottom: 10 }}
-                                            image={post.media_url} />
-                                        <Divider variant="middle" />
-
-                                        <CardContent>
-                                            <Typography>{this.captionHandler(post.id)}</Typography>
+                                        <CardContent className={classes.cardContent}>
+                                            <CardMedia style={{ height: 0, paddingTop: '80%', marginBottom: 10 }}
+                                                image={post.media_url}
+                                                height="140" />
+                                            <Divider variant="middle" />
+                                            <Typography variant="h6" gutterBottom>{this.captionHandler(post.id)}</Typography>
+                                            <Typography variant="subtitle1" color="primary" gutterBottom>{this.state.tags}</Typography>
+                                            <div className='likes'
+                                            //  onClick={this.likeCounterHandler(post.isLiked)}
+                                             >
+                                                {
+                                                    this.state.isLiked===false?
+                                                    <FavoriteBorderIcon fontSize='default'/>
+                                                    :
+                                                    <FavoriteIcon fontSize='default' color="secondary"/>
+                                                }
+                                                
+                                               
+                                                <Typography>
+                                                    <span>&nbsp;
+                                                        {  this.likeCounterHandler() + ' likes'}
+                                                    </span>
+                                                </Typography>
+                                            </div>
                                         </CardContent>
                                     </Card>
                                 </GridListTile>
