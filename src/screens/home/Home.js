@@ -3,7 +3,28 @@ import '../home/Home.css'
 import Header from '../../common/header/Header';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
-import GridListTileBar from '@material-ui/core/GridListTileBar';
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardMedia from '@material-ui/core/CardMedia';
+import { withStyles } from '@material-ui/core/styles';
+import Divider from '@material-ui/core/Divider';
+import CardContent from '@material-ui/core/CardContent';
+import Avatar from '@material-ui/core/Avatar';
+import Typography from '@material-ui/core/Typography';
+
+const styles = theme => ({
+    root: {
+        maxWidth: 345,
+    },
+    media: {
+        height: 0,
+        paddingTop: '56.25%', // 16:9
+    },
+    avatar: {
+        backgroundColor: "red",
+    },
+});
+
 class Home extends Component {
     constructor() {
         super();
@@ -44,9 +65,6 @@ class Home extends Component {
         let that = this;
         let xhr = new XMLHttpRequest();
         let data = null;
-        console.log("post id here :" + id);
-        // console.log("post caption here:" + caption);
-        // console.log("post details" + caption);
         xhr.addEventListener("readystatechange", function () {
             if (this.readyState === 4) {
                 that.setState({
@@ -106,25 +124,42 @@ class Home extends Component {
     }
 
     render() {
+        const { classes } = this.props;
         return (
             <div>
                 <Header {...this.props} baseUrl={this.props.baseUrl} searchImage={this.searchImage} />
-                <GridList cols={2}>
-                    {
-                        this.state.imageDetailsCopy.map((post) => (
-                            <GridListTile key={post.id}>
+                <div className="GridContainer">
+                    <GridList cols={2} cellHeight={480} spacing={6}>
+                        {
+                            this.state.imageDetailsCopy.map((post) => (
 
-                                <img src={post.media_url}
-                                    alt={this.captionHandler(post.id)} />
-                                <GridListTileBar title={this.captionHandler(post.id)} />
+                                <GridListTile key={post.id}>
+                                    <Card key={post.id} variant="outlined">
+                                        <CardHeader
+                                            avatar={
+                                                <Avatar variant="circle" className={classes.avatar}>
+                                                    S
+                                                </Avatar>
+                                            }
+                                            title={post.username}
+                                            subheader={new Date(post.timestamp).toLocaleString().replace(",", "")}
+                                        />
+                                        <CardMedia style={{ height: 0, paddingTop: '80%', marginBottom: 10 }}
+                                            image={post.media_url} />
+                                        <Divider variant="middle" />
 
-                            </GridListTile>))
-                    }
-                </GridList>
-
+                                        <CardContent>
+                                            <Typography>{this.captionHandler(post.id)}</Typography>
+                                        </CardContent>
+                                    </Card>
+                                </GridListTile>
+                            ))
+                        }
+                    </GridList>
+                </div>
 
             </div>
         )
     }
 }
-export default Home;
+export default withStyles(styles)(Home);;
