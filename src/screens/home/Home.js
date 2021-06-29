@@ -97,6 +97,13 @@ class Home extends Component {
         this.filterImages(searchImageCaption)
     }
 
+    captionHandler = (id) => {
+        let imageData = [];
+        imageData = this.state.albumDataCopy.find((post) => {
+            return post.id === id;
+        });
+        return imageData.caption;
+    }
 
     render() {
         return (
@@ -108,8 +115,8 @@ class Home extends Component {
                             <GridListTile key={post.id}>
 
                                 <img src={post.media_url}
-                                    alt={post.username} />
-                                <GridListTileBar title={post.username} />
+                                    alt={this.captionHandler(post.id)} />
+                                <GridListTileBar title={this.captionHandler(post.id)} />
 
                             </GridListTile>))
                     }
