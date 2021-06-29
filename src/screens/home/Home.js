@@ -9,9 +9,9 @@ class Home extends Component {
         super();
         this.state = {
             albumDataMaster: [],
-            albumDataCopy:[],
+            albumDataCopy: [],
             imageDetailsMaster: [],
-            imageDetailsCopy:[],
+            imageDetailsCopy: [],
         }
 
     }
@@ -37,15 +37,16 @@ class Home extends Component {
     }
     getImageDetails = () => {
         this.state.albumDataMaster.map((image) => {
-            return this.getImageDetailsById(image.id, image.caption);
+            return this.getImageDetailsById(image.id);
         });
     };
-    getImageDetailsById = (id, caption) => {
+    getImageDetailsById = (id) => {
         let that = this;
         let xhr = new XMLHttpRequest();
         let data = null;
-        // console.log("post id here :" + id);
+        console.log("post id here :" + id);
         // console.log("post caption here:" + caption);
+        // console.log("post details" + caption);
         xhr.addEventListener("readystatechange", function () {
             if (this.readyState === 4) {
                 that.setState({
@@ -72,7 +73,7 @@ class Home extends Component {
 
     filterImages = (searchImageCaption) => {
 
-        let filterImages = this.state.albumDataMaster
+        let filterImages = this.state.albumDataMaster;
 
         if (searchImageCaption.length !== 0) {
             filterImages = filterImages.filter((image) => {
@@ -81,36 +82,37 @@ class Home extends Component {
             })
 
         }
-        this.setState({ albumDataCopy: filterImages })
+
+        let searchResultFeed = []
+        searchResultFeed = this.state.imageDetailsMaster.filter((postDetails) => {
+            return filterImages.find((post) => {
+                return postDetails.id === post.id
+            });
+        })
+        this.setState({ imageDetailsCopy: searchResultFeed })
     }
 
     searchImage = (searchImageCaption) => {
         console.log(searchImageCaption)
         this.filterImages(searchImageCaption)
     }
-      
- 
-    
-   
+
+
     render() {
         return (
             <div>
                 <Header {...this.props} baseUrl={this.props.baseUrl} searchImage={this.searchImage} />
-                <p>Home Page</p>
-
-                
-                
                 <GridList cols={2}>
-                     {  
-                        this.state.albumDataCopy.map( (post) => (
+                    {
+                        this.state.imageDetailsCopy.map((post) => (
                             <GridListTile key={post.id}>
-                                
-                                <img src={post.media_url} alt={post.caption}/>
-                                <GridListTileBar title={post.media_url} />
-                                
-                            </GridListTile>
-                        ))
-                     }                   
+
+                                <img src={post.media_url}
+                                    alt={post.username} />
+                                <GridListTileBar title={post.username} />
+
+                            </GridListTile>))
+                    }
                 </GridList>
 
 
