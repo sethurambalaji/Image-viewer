@@ -48,9 +48,9 @@ class Home extends Component {
             imageDetailsMaster: [],
             imageDetailsCopy: [],
             tags: "#upgrad #reactjs #imageviewer #user #image",
-            isLiked: "white",
-            likeCounter: 1,
-            isLikeLoaded:false,
+            feed:[],
+            feedCopy:[],
+            
         }
 
     }
@@ -73,7 +73,10 @@ class Home extends Component {
             window.sessionStorage.getItem("access-token")
         );
         xhr.send(data);
-    }
+        }
+    
+
+
     getImageDetails = () => {
         this.state.albumDataMaster.map((image) => {
             return this.getImageDetailsById(image.id);
@@ -95,7 +98,9 @@ class Home extends Component {
                         JSON.parse(this.responseText)
                     ),
                 });
+                that.setPostDetails(that.state.imageDetailsCopy);
             }
+
         });
         xhr.open(
             "GET",
@@ -107,10 +112,42 @@ class Home extends Component {
         xhr.send(data);
     };
 
+    setPostDetails = (albumDetails) => {
+        let arr = this.state.feed;
+        console.log("arr: "+arr)
+        let feed = {} ;
+        // albumDetails.foreach((post) => {
+        //     feed.id = post.id;
+        //     feed.caption = this.captionHandler(feed.id);
+        //     feed.media_url = post.media_url;
+        //     feed.timestamp = post.timestamp;
+        //     feed.username = post.username;
+        //     feed.likes = Math.floor(Math.random()*100);
+        //     feed.comments =[];
+        //     arr.push(feed);
+        //     arr = arr.filter( (ele, ind) => ind === arr.findIndex( elem => elem.id === ele.id))
+
+        // })
+        albumDetails.forEach((post) => {
+            feed.id = post.id;
+            feed.caption = this.captionHandler(feed.id);
+            feed.media_url = post.media_url;
+            feed.timestamp = post.timestamp;
+            feed.username = post.username;
+            feed.likes = Math.floor(Math.random()*100);
+            feed.comments =[];
+            arr.push(feed);
+            arr = arr.filter( (ele, ind) => ind === arr.findIndex( elem => elem.id === ele.id))
+
+        })
+        
+        this.setState({feed:arr})
+        this.setState({feedCopy:this.state.feed})
+        console.log(this.state.feedCopy)
+    }
+
     filterImages = (searchImageCaption) => {
-
-        let filterImages = this.state.albumDataMaster;
-
+        let filterImages = this.state.feed;
         if (searchImageCaption.length !== 0) {
             filterImages = filterImages.filter((image) => {
 
@@ -118,18 +155,10 @@ class Home extends Component {
             })
 
         }
-
-        let searchResultFeed = []
-        searchResultFeed = this.state.imageDetailsMaster.filter((postDetails) => {
-            return filterImages.find((post) => {
-                return postDetails.id === post.id
-            });
-        })
-        this.setState({ imageDetailsCopy: searchResultFeed })
+        this.setState({ feedCopy: filterImages })
     }
 
     searchImage = (searchImageCaption) => {
-        console.log(searchImageCaption)
         this.filterImages(searchImageCaption)
     }
 
@@ -143,17 +172,7 @@ class Home extends Component {
         }
         return imageData.caption;
     }
-
     
-    likeCounterHandler = () => {
-        let likes = this.state.likeCounter
-       
-            likes = Math.floor(Math.random() * 100)
-         
-        
-       return likes;
-    }
-
     render() {
         const { classes } = this.props;
         return (
@@ -161,8 +180,9 @@ class Home extends Component {
                 <Header {...this.props} baseUrl={this.props.baseUrl} searchImage={this.searchImage} />
                 <div className="GridContainer">
                     <GridList cols={2} cellHeight={600} spacing={1}>
-                        {
-                            this.state.imageDetailsCopy.map((post) => (
+                        {    
+
+                            this.state.feedCopy.map((post) => (
 
                                 <GridListTile key={post.id}>
                                     <Card key={post.id} variant="outlined" className={classes.card}>
@@ -180,22 +200,20 @@ class Home extends Component {
                                                 image={post.media_url}
                                                 height="140" />
                                             <Divider variant="middle" />
-                                            <Typography variant="h6" gutterBottom>{this.captionHandler(post.id)}</Typography>
+                                            <Typography variant="h6" gutterBottom>{post.caption}</Typography>
                                             <Typography variant="subtitle1" color="primary" gutterBottom>{this.state.tags}</Typography>
-                                            <div className='likes'
-                                            //  onClick={this.likeCounterHandler(post.isLiked)}
-                                             >
+                                            <div className='likes'>
                                                 {
-                                                    this.state.isLiked===false?
-                                                    <FavoriteBorderIcon fontSize='default'/>
-                                                    :
+                                                    post.isLiked?
                                                     <FavoriteIcon fontSize='default' color="secondary"/>
+                                                    :
+                                                    <FavoriteBorderIcon fontSize='default'/>                                                  
                                                 }
                                                 
                                                
                                                 <Typography>
                                                     <span>&nbsp;
-                                                        {  this.likeCounterHandler() + ' likes'}
+                                                        {  post.likes + ' likes'}
                                                     </span>
                                                 </Typography>
                                             </div>
