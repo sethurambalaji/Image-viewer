@@ -6,6 +6,7 @@ import { InputAdornment } from '@material-ui/core';
 import { fade, makeStyles } from '@material-ui/core/styles';
 
 import SearchIcon from '@material-ui/icons/Search';
+import Avatar from '@material-ui/core/Avatar';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -79,6 +80,7 @@ const Header = (props) => {
             <span className="logo">Image Viewer</span>
             {
                 isLoggedIn ?
+                    <div className="header-right">
                     <div className={classes.search + " searchBar"}>
                         <Input className='search'
                             type='search'
@@ -89,6 +91,10 @@ const Header = (props) => {
                                 <InputAdornment position="start"> <SearchIcon /> </InputAdornment>
                             }
                         />
+                    </div>
+                    <Avatar variant="circle" className="avatarHeader">
+                                                    S
+                                                </Avatar>
                     </div>
                     :
                     <span/>

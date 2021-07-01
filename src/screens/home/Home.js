@@ -217,7 +217,7 @@ class Home extends Component {
             <div>
                 <Header {...this.props} baseUrl={this.props.baseUrl} searchImage={this.searchImage} />
                 <div className="GridContainer">
-                    <GridList cols={2} cellHeight={900} spacing={1}>
+                    <GridList cols={2} cellHeight={600} spacing={1}>
                         {
 
                             this.state.feedCopy.map((post) => (
@@ -253,11 +253,6 @@ class Home extends Component {
                                             </div><br />
                                             <div>
                                                 <ul>
-                                                    {/* {post.comments.forEach((comment) => {
-                                                        <li><Typography>
-                                                            <b>{this.state.username}</b> : {comment}
-                                                        </Typography>  </li>
-                                                    }) */}
                                                     {post.comments.map((comment, i) => (
 
                                                         <li key={i}><Typography>
@@ -271,8 +266,8 @@ class Home extends Component {
 
                                             <div>
                                                 <FormControl className={classes.formControl}>
-                                                    <InputLabel htmlFor="addComment">Add Comment</InputLabel>
-                                                    <Input id="addComment"
+                                                    <InputLabel htmlFor={"addComment"+post.id}>Add Comment</InputLabel>
+                                                    <Input id={"addComment"+post.id}
                                                         onChange={(e) => this.typeCommentHandler(e, post)}
                                                         value={post.addedComment} />
                                                 </FormControl>
