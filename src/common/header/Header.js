@@ -64,6 +64,7 @@ const useStyles = makeStyles((theme) => ({
     avatar: {
         backgroundColor: "red",
     },
+   
 }));
 
 const Header = (props) => {

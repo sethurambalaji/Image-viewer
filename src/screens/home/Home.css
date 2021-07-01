@@ -13,25 +13,32 @@
     cursor: pointer;
     margin-top: 20px;
     margin-left: 10px;
+    display: inline-block;
 }
 
 .addComentsSection{
-    display: inline-flex;
+    display: block;
     width: 100%;
     justify-content: space-around;
+    min-width: 380px;
 }
 .addComment{
     margin: 8px;
-    max-width: 300px;
-    min-width: 300px;
+    max-width: 370px;
+    min-width: 370px;
 }
 
 .comments-section{
     max-height: 60px;
+    min-height: 60px;
     overflow: auto;
 }
 
-ul#remove {
-    list-style-type: none;
-    padding: 0;
+.Home-formControl-8 {
+    margin: 8px;
+    max-width: 380px;
+    min-width: 380px;
+}
+.MuiInputLabel-formControl {
+    left: 13px;
 }

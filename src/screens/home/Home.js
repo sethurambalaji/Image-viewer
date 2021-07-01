@@ -26,7 +26,8 @@ const styles = theme => ({
         margin: "10px",
         maxWidth: 345,
         minWidth: "90%",
-        overflow: "visible"
+        overflow: "visible",
+        height: "95%"
     },
     media: {
         height: 0,
@@ -62,6 +63,7 @@ const styles = theme => ({
     InputLabel:{
         marginLeft:"15px"
     },
+    
    
 });
 
@@ -277,7 +279,10 @@ class Home extends Component {
                                                 </FormControl>
                                                 <div className='add-button'>
                                                     <FormControl>
-                                                        <Button variant='contained' color='primary' onClick={() => this.addCommentHandler(post)}>ADD</Button>
+                                                        <Button
+                                                                variant='contained'
+                                                                 color='primary'
+                                                                 onClick={() => this.addCommentHandler(post)}>ADD</Button>
                                                     </FormControl>
                                                 </div>
 
