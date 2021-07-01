@@ -17,10 +17,25 @@
     
 }
 .avatarHeader{
+   
+    display: inline-block;
+}
+.avatarIcon{
     margin: 10px 8.5px;
 }
 .header-right{
     display: inline-flex;
     flex-direction: row;
     float: right;
+    max-height: 60px;
 }
+.MuiIconButton-root {
+    max-height: 60px;
+}
+.Header-avatar-button
+{
+    max-height: 60px;
+}
+
+
+

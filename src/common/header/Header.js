@@ -1,4 +1,4 @@
-import React, {  useEffect  , useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../header/Header.css'
 
 import Input from '@material-ui/core/Input';
@@ -7,6 +7,10 @@ import { fade, makeStyles } from '@material-ui/core/styles';
 
 import SearchIcon from '@material-ui/icons/Search';
 import Avatar from '@material-ui/core/Avatar';
+// import { IconButton } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -64,20 +68,34 @@ const useStyles = makeStyles((theme) => ({
     avatar: {
         backgroundColor: "red",
     },
-   
+
 }));
 
 const Header = (props) => {
     const classes = useStyles();
-    const [isLoggedIn,logging] = useState(false)
+    const [isLoggedIn, logging] = useState(false)
     useEffect(() => {
-        logging(window.sessionStorage.getItem("access-token")===null?false:true)
+        logging(window.sessionStorage.getItem("access-token") === null ? false : true)
     });
+
+    const [anchorEl, setAnchorEl] = React.useState(null);
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
     function searchContentHandler(e) {
         props.searchImage(e.target.value);
         e.preventDefault();
     }
+
+    // function menuClickHandler(e) {
+    //     console.log("menuclick handler working")
+    // }
 
     return (
         <div className="header" >
@@ -85,28 +103,45 @@ const Header = (props) => {
             {
                 isLoggedIn ?
                     <div className="header-right">
-                    <div className={classes.search + " searchBar"}>
-                        <Input className='search'
-                            type='search'
-                            placeholder='Search...'
-                            onChange={searchContentHandler}
-                            disableUnderline
-                            startAdornment={
-                                <InputAdornment position="start"> <SearchIcon /> </InputAdornment>
-                            }
-                        />
-                    </div>
-                    <Avatar variant="circle" className={"avatarHeader "+classes.avatar}>
-                                                    S
-                                                </Avatar>
+                        <div className={classes.search + " searchBar"}>
+                            <Input className='search'
+                                type='search'
+                                placeholder='Search...'
+                                onChange={searchContentHandler}
+                                disableUnderline
+                                startAdornment={
+                                    <InputAdornment position="start"> <SearchIcon /> </InputAdornment>
+                                }
+                            />
+                        </div>
+                        <div className="avatarHeader">
+                            <Button className="Header-avatar-button" aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
+                                <Avatar variant="circle" className={"avatarIcon " + classes.avatar}>
+                                    S
+                                </Avatar>
+                            </Button>
+                            <Menu
+                                id="simple-menu"
+                                anchorEl={anchorEl}
+                                keepMounted
+                                open={Boolean(anchorEl)}
+                                onClose={handleClose}
+                                style={{top:"38px"}}
+                            >
+                                <MenuItem onClick={handleClose}>My account</MenuItem>
+                                <MenuItem onClick={handleClose}>Logout</MenuItem>
+                            </Menu>
+
+
+                        </div>
                     </div>
                     :
-                    <span/>
+                    <span />
 
             }
 
 
-        </div>
+        </div >
     );
 }
 export default Header

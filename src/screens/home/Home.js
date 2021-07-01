@@ -49,7 +49,7 @@ const styles = theme => ({
     formControl: {
         margin: theme.spacing(1),
         minWidth: 240,
-        maxWidth: 240
+        maxWidth: 370,
     },
     GridListTile: {
         position: 'relative',
@@ -78,8 +78,6 @@ class Home extends Component {
             tags: "#upgrad #reactjs #imageviewer #user #image",
             feed: [],
             feedCopy: [],
-            // defaultComment:""
-
         }
 
     }
@@ -143,7 +141,7 @@ class Home extends Component {
 
     setPostDetails = (albumDetails) => {
         let arr = this.state.feed;
-        console.log("arr: " + arr)
+        // console.log("arr: " + arr)
         let feed = {};
         albumDetails.forEach((post) => {
             feed.id = post.id;
@@ -161,7 +159,7 @@ class Home extends Component {
 
         this.setState({ feed: arr })
         this.setState({ feedCopy: this.state.feed })
-        console.log(this.state.feedCopy)
+        // console.log(this.state.feedCopy)
     }
 
     filterImages = (searchImageCaption) => {
