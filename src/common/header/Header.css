@@ -11,9 +11,7 @@
     justify-content: center;
     font-size: 18px;
 }  
-.searchBar{
-    display: inline-block;
-    position:relative;
+.searchBar{    
     float:right;
     margin: 12.5px 10px 12.5px 0px;
     

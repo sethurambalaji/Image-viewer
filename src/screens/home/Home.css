@@ -11,6 +11,27 @@
 }
 .add-button {
     cursor: pointer;
-    margin-top: 10px;
+    margin-top: 20px;
     margin-left: 10px;
+}
+
+.addComentsSection{
+    display: inline-flex;
+    width: 100%;
+    justify-content: space-around;
+}
+.addComment{
+    margin: 8px;
+    max-width: 300px;
+    min-width: 300px;
+}
+
+.comments-section{
+    max-height: 60px;
+    overflow: auto;
+}
+
+ul#remove {
+    list-style-type: none;
+    padding: 0;
 }

@@ -61,6 +61,9 @@ const useStyles = makeStyles((theme) => ({
             },
         },
     },
+    avatar: {
+        backgroundColor: "red",
+    },
 }));
 
 const Header = (props) => {
@@ -92,7 +95,7 @@ const Header = (props) => {
                             }
                         />
                     </div>
-                    <Avatar variant="circle" className="avatarHeader">
+                    <Avatar variant="circle" className={"avatarHeader "+classes.avatar}>
                                                     S
                                                 </Avatar>
                     </div>

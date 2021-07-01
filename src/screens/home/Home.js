@@ -37,8 +37,7 @@ const styles = theme => ({
     },
     cardContent: {
         minHeight: 300,
-        width: "80%",
-        height: "90%"
+        width:"90%"
     },
     margin: {
         margin: theme.spacing(1),
@@ -59,7 +58,11 @@ const styles = theme => ({
         minWidth: '664px',
         overflow: 'hidden',
         height: '100%'
-    }
+    },
+    InputLabel:{
+        marginLeft:"15px"
+    },
+   
 });
 
 class Home extends Component {
@@ -217,7 +220,7 @@ class Home extends Component {
             <div>
                 <Header {...this.props} baseUrl={this.props.baseUrl} searchImage={this.searchImage} />
                 <div className="GridContainer">
-                    <GridList cols={2} cellHeight={600} spacing={1}>
+                    <GridList cols={2} cellHeight={800} spacing={1}>
                         {
 
                             this.state.feedCopy.map((post) => (
@@ -251,23 +254,24 @@ class Home extends Component {
                                                     <span>&nbsp;{post.likes + ' likes'}</span>
                                                 </Typography>
                                             </div><br />
-                                            <div>
-                                                <ul>
+                                            <div className="comments-section">
+                                                
                                                     {post.comments.map((comment, i) => (
 
-                                                        <li key={i}><Typography>
+                                                        <section key={i}><Typography>
                                                             <b>{post.username}</b> : {comment}
-                                                        </Typography>  </li>
+                                                        </Typography>  </section>
                                                     ))}
 
 
-                                                </ul>
+                                              
                                             </div>
 
-                                            <div>
+                                            <div className="addComentsSection">
                                                 <FormControl className={classes.formControl}>
                                                     <InputLabel htmlFor={"addComment"+post.id}>Add Comment</InputLabel>
-                                                    <Input id={"addComment"+post.id}
+                                                    <Input id={"addComment "+post.id}
+                                                        className="addComment"
                                                         onChange={(e) => this.typeCommentHandler(e, post)}
                                                         value={post.addedComment} />
                                                 </FormControl>
