@@ -13,7 +13,9 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import FavoriteIcon from '@material-ui/icons/Favorite';
-
+import { PostAddRounded } from '@material-ui/icons';
+// import Button from '@material-ui/core/Button';
+// import IconButton from '@material-ui/core/IconButton';
 const styles = theme => ({
     root: {
         minWidth: 345,
@@ -36,7 +38,13 @@ const styles = theme => ({
         minHeight: 300,
         width: "80%",
         height: "90%"
-    }
+    },
+    margin: {
+        margin: theme.spacing(1),
+    },
+    extendedIcon: {
+        marginRight: theme.spacing(1),
+    },
 });
 
 class Home extends Component {
@@ -48,9 +56,9 @@ class Home extends Component {
             imageDetailsMaster: [],
             imageDetailsCopy: [],
             tags: "#upgrad #reactjs #imageviewer #user #image",
-            feed:[],
-            feedCopy:[],
-            
+            feed: [],
+            feedCopy: [],
+
         }
 
     }
@@ -73,8 +81,8 @@ class Home extends Component {
             window.sessionStorage.getItem("access-token")
         );
         xhr.send(data);
-        }
-    
+    }
+
 
 
     getImageDetails = () => {
@@ -114,35 +122,23 @@ class Home extends Component {
 
     setPostDetails = (albumDetails) => {
         let arr = this.state.feed;
-        console.log("arr: "+arr)
-        let feed = {} ;
-        // albumDetails.foreach((post) => {
-        //     feed.id = post.id;
-        //     feed.caption = this.captionHandler(feed.id);
-        //     feed.media_url = post.media_url;
-        //     feed.timestamp = post.timestamp;
-        //     feed.username = post.username;
-        //     feed.likes = Math.floor(Math.random()*100);
-        //     feed.comments =[];
-        //     arr.push(feed);
-        //     arr = arr.filter( (ele, ind) => ind === arr.findIndex( elem => elem.id === ele.id))
-
-        // })
+        console.log("arr: " + arr)
+        let feed = {};
         albumDetails.forEach((post) => {
             feed.id = post.id;
             feed.caption = this.captionHandler(feed.id);
             feed.media_url = post.media_url;
             feed.timestamp = post.timestamp;
             feed.username = post.username;
-            feed.likes = Math.floor(Math.random()*100);
-            feed.comments =[];
+            feed.likes = Math.floor(Math.random() * 100);
+            feed.comments = [];
             arr.push(feed);
-            arr = arr.filter( (ele, ind) => ind === arr.findIndex( elem => elem.id === ele.id))
+            arr = arr.filter((ele, ind) => ind === arr.findIndex(elem => elem.id === ele.id))
 
         })
-        
-        this.setState({feed:arr})
-        this.setState({feedCopy:this.state.feed})
+
+        this.setState({ feed: arr })
+        this.setState({ feedCopy: this.state.feed })
         console.log(this.state.feedCopy)
     }
 
@@ -172,7 +168,16 @@ class Home extends Component {
         }
         return imageData.caption;
     }
+
+    likeHandler = (post) => {
+        let index = this.state.feedCopy.findIndex(postLiked => postLiked.id === post.id);
+        var stateCopy = Object.assign({}, this.state);
+        stateCopy.feedCopy[index].likes = post.isLiked===true? post.likes-1 : post.likes+1;
+        stateCopy.feedCopy[index].isLiked = !post.isLiked
+        this.setState(stateCopy);
+    }
     
+
     render() {
         const { classes } = this.props;
         return (
@@ -180,7 +185,7 @@ class Home extends Component {
                 <Header {...this.props} baseUrl={this.props.baseUrl} searchImage={this.searchImage} />
                 <div className="GridContainer">
                     <GridList cols={2} cellHeight={600} spacing={1}>
-                        {    
+                        {
 
                             this.state.feedCopy.map((post) => (
 
@@ -203,20 +208,16 @@ class Home extends Component {
                                             <Typography variant="h6" gutterBottom>{post.caption}</Typography>
                                             <Typography variant="subtitle1" color="primary" gutterBottom>{this.state.tags}</Typography>
                                             <div className='likes'>
-                                                {
-                                                    post.isLiked?
-                                                    <FavoriteIcon fontSize='default' color="secondary"/>
+                                            {
+                                                post.isLiked ?
+                                                    <FavoriteIcon fontSize='default' style={{ color: "red" }} onClick={() => this.likeHandler(post)} />
                                                     :
-                                                    <FavoriteBorderIcon fontSize='default'/>                                                  
-                                                }
-                                                
-                                               
-                                                <Typography>
-                                                    <span>&nbsp;
-                                                        {  post.likes + ' likes'}
-                                                    </span>
-                                                </Typography>
-                                            </div>
+                                                    <FavoriteBorderIcon fontSize='default' onClick={() => this.likeHandler(post)} />
+                                            }
+                                            <Typography>
+                                                <span>&nbsp;{ post.likes + ' likes'}</span>
+                                            </Typography>
+                                        </div>
                                         </CardContent>
                                     </Card>
                                 </GridListTile>
