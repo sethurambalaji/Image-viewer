@@ -9,9 +9,8 @@
     display: flex;
     flex-direction: row;
 }
-.red{
-    background-color: red;
-}
-.white{
-    background-color: white;
+.add-button {
+    cursor: pointer;
+    margin-top: 10px;
+    margin-left: 10px;
 }

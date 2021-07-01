@@ -13,9 +13,10 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import FavoriteIcon from '@material-ui/icons/Favorite';
-import { PostAddRounded } from '@material-ui/icons';
-// import Button from '@material-ui/core/Button';
-// import IconButton from '@material-ui/core/IconButton';
+import FormControl from '@material-ui/core/FormControl';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import { Button } from '@material-ui/core';
 const styles = theme => ({
     root: {
         minWidth: 345,
@@ -45,6 +46,20 @@ const styles = theme => ({
     extendedIcon: {
         marginRight: theme.spacing(1),
     },
+    formControl: {
+        margin: theme.spacing(1),
+        minWidth: 240,
+        maxWidth: 240
+    },
+    GridListTile: {
+        position: 'relative',
+        float: 'left',
+        width: '100%',
+        minHeight: '600px',
+        minWidth: '664px',
+        overflow: 'hidden',
+        height: '100%'
+    }
 });
 
 class Home extends Component {
@@ -58,6 +73,7 @@ class Home extends Component {
             tags: "#upgrad #reactjs #imageviewer #user #image",
             feed: [],
             feedCopy: [],
+            // defaultComment:""
 
         }
 
@@ -132,6 +148,7 @@ class Home extends Component {
             feed.username = post.username;
             feed.likes = Math.floor(Math.random() * 100);
             feed.comments = [];
+            feed.addedComment = "";
             arr.push(feed);
             arr = arr.filter((ele, ind) => ind === arr.findIndex(elem => elem.id === ele.id))
 
@@ -172,11 +189,27 @@ class Home extends Component {
     likeHandler = (post) => {
         let index = this.state.feedCopy.findIndex(postLiked => postLiked.id === post.id);
         var stateCopy = Object.assign({}, this.state);
-        stateCopy.feedCopy[index].likes = post.isLiked===true? post.likes-1 : post.likes+1;
+        stateCopy.feedCopy[index].likes = post.isLiked === true ? post.likes - 1 : post.likes + 1;
         stateCopy.feedCopy[index].isLiked = !post.isLiked
         this.setState(stateCopy);
     }
-    
+
+    typeCommentHandler = (e, post) => {
+        let index = this.state.feedCopy.findIndex(postLiked => postLiked.id === post.id);
+        var stateCopy = Object.assign({}, this.state);
+        stateCopy.feedCopy[index].addedComment = e.target.value;
+        this.setState(stateCopy);
+    }
+
+    addCommentHandler = (post) => {
+        let index = this.state.feedCopy.findIndex(postLiked => postLiked.id === post.id);
+        var stateCopy = Object.assign({}, this.state);
+        stateCopy.feedCopy[index].comments.push(post.addedComment);
+        stateCopy.feedCopy[index].addedComment = '';
+        this.setState(stateCopy);
+    }
+
+
 
     render() {
         const { classes } = this.props;
@@ -184,7 +217,7 @@ class Home extends Component {
             <div>
                 <Header {...this.props} baseUrl={this.props.baseUrl} searchImage={this.searchImage} />
                 <div className="GridContainer">
-                    <GridList cols={2} cellHeight={600} spacing={1}>
+                    <GridList cols={2} cellHeight={900} spacing={1}>
                         {
 
                             this.state.feedCopy.map((post) => (
@@ -208,16 +241,48 @@ class Home extends Component {
                                             <Typography variant="h6" gutterBottom>{post.caption}</Typography>
                                             <Typography variant="subtitle1" color="primary" gutterBottom>{this.state.tags}</Typography>
                                             <div className='likes'>
-                                            {
-                                                post.isLiked ?
-                                                    <FavoriteIcon fontSize='default' style={{ color: "red" }} onClick={() => this.likeHandler(post)} />
-                                                    :
-                                                    <FavoriteBorderIcon fontSize='default' onClick={() => this.likeHandler(post)} />
-                                            }
-                                            <Typography>
-                                                <span>&nbsp;{ post.likes + ' likes'}</span>
-                                            </Typography>
-                                        </div>
+                                                {
+                                                    post.isLiked ?
+                                                        <FavoriteIcon fontSize='default' style={{ color: "red" }} onClick={() => this.likeHandler(post)} />
+                                                        :
+                                                        <FavoriteBorderIcon fontSize='default' onClick={() => this.likeHandler(post)} />
+                                                }
+                                                <Typography>
+                                                    <span>&nbsp;{post.likes + ' likes'}</span>
+                                                </Typography>
+                                            </div><br />
+                                            <div>
+                                                <ul>
+                                                    {/* {post.comments.forEach((comment) => {
+                                                        <li><Typography>
+                                                            <b>{this.state.username}</b> : {comment}
+                                                        </Typography>  </li>
+                                                    }) */}
+                                                    {post.comments.map((comment, i) => (
+
+                                                        <li key={i}><Typography>
+                                                            <b>{post.username}</b> : {comment}
+                                                        </Typography>  </li>
+                                                    ))}
+
+
+                                                </ul>
+                                            </div>
+
+                                            <div>
+                                                <FormControl className={classes.formControl}>
+                                                    <InputLabel htmlFor="addComment">Add Comment</InputLabel>
+                                                    <Input id="addComment"
+                                                        onChange={(e) => this.typeCommentHandler(e, post)}
+                                                        value={post.addedComment} />
+                                                </FormControl>
+                                                <div className='add-button'>
+                                                    <FormControl>
+                                                        <Button variant='contained' color='primary' onClick={() => this.addCommentHandler(post)}>ADD</Button>
+                                                    </FormControl>
+                                                </div>
+
+                                            </div><br />
                                         </CardContent>
                                     </Card>
                                 </GridListTile>
