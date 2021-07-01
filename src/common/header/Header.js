@@ -7,10 +7,10 @@ import { fade, makeStyles } from '@material-ui/core/styles';
 
 import SearchIcon from '@material-ui/icons/Search';
 import Avatar from '@material-ui/core/Avatar';
-// import { IconButton } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -93,9 +93,10 @@ const Header = (props) => {
         e.preventDefault();
     }
 
-    // function menuClickHandler(e) {
-    //     console.log("menuclick handler working")
-    // }
+    function logoutHandler(){
+        window.sessionStorage.removeItem("access-token");
+        window.location = '/';
+    }
 
     return (
         <div className="header" >
@@ -129,7 +130,7 @@ const Header = (props) => {
                                 style={{top:"38px"}}
                             >
                                 <MenuItem onClick={handleClose}>My account</MenuItem>
-                                <MenuItem onClick={handleClose}>Logout</MenuItem>
+                                <MenuItem onClick={logoutHandler}> Logout</MenuItem>
                             </Menu>
 
 
