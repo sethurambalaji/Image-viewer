@@ -78,6 +78,8 @@ const Header = (props) => {
         logging(window.sessionStorage.getItem("access-token") === null ? false : true)
     });
 
+
+
     const [anchorEl, setAnchorEl] = React.useState(null);
 
     const handleClick = (event) => {
@@ -93,10 +95,15 @@ const Header = (props) => {
         e.preventDefault();
     }
 
-    function logoutHandler(){
+    function logoutHandler() {
         window.sessionStorage.removeItem("access-token");
         window.location = '/';
     }
+
+    function myAccountClickHandler() {
+        window.location = '/profile';
+    }
+
 
     return (
         <div className="header" >
@@ -104,17 +111,24 @@ const Header = (props) => {
             {
                 isLoggedIn ?
                     <div className="header-right">
-                        <div className={classes.search + " searchBar"}>
-                            <Input className='search'
-                                type='search'
-                                placeholder='Search...'
-                                onChange={searchContentHandler}
-                                disableUnderline
-                                startAdornment={
-                                    <InputAdornment position="start"> <SearchIcon /> </InputAdornment>
-                                }
-                            />
-                        </div>
+
+                        {window.location.href.includes("/home")===true ?
+
+                            <div className={classes.search + " searchBar"}>
+                                <Input className='search'
+                                    type='search'
+                                    placeholder='Search...'
+                                    onChange={searchContentHandler}
+                                    disableUnderline
+                                    startAdornment={
+                                        <InputAdornment position="start"> <SearchIcon /> </InputAdornment>
+                                    }
+                                />
+                            </div>
+                            :
+                            <span />
+                        }
+
                         <div className="avatarHeader">
                             <Button className="Header-avatar-button" aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
                                 <Avatar variant="circle" className={"avatarIcon " + classes.avatar}>
@@ -127,9 +141,9 @@ const Header = (props) => {
                                 keepMounted
                                 open={Boolean(anchorEl)}
                                 onClose={handleClose}
-                                style={{top:"38px"}}
+                                style={{ top: "38px" }}
                             >
-                                <MenuItem onClick={handleClose}>My account</MenuItem>
+                                <MenuItem onClick={myAccountClickHandler}>My account</MenuItem>
                                 <MenuItem onClick={logoutHandler}> Logout</MenuItem>
                             </Menu>
 

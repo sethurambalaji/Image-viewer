@@ -17,6 +17,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import { Button } from '@material-ui/core';
+import { Redirect } from 'react-router';
 const styles = theme => ({
     root: {
         minWidth: 345,
@@ -78,11 +79,14 @@ class Home extends Component {
             tags: "#upgrad #reactjs #imageviewer #user #image",
             feed: [],
             feedCopy: [],
+            loggedIn:window.sessionStorage.getItem("access-token")===null?false:true
         }
 
     }
 
     UNSAFE_componentWillMount() {
+        if(window.sessionStorage.getItem("access-token")!==null)
+        {
         let data = null;
         let xhr = new XMLHttpRequest();
         let that = this;
@@ -100,6 +104,7 @@ class Home extends Component {
             window.sessionStorage.getItem("access-token")
         );
         xhr.send(data);
+        }
     }
 
 
@@ -217,6 +222,7 @@ class Home extends Component {
     render() {
         const { classes } = this.props;
         return (
+            (this.state.loggedIn===false) ? <Redirect to="/" />:
             <div>
                 <Header {...this.props} baseUrl={this.props.baseUrl} searchImage={this.searchImage} />
                 <div className="GridContainer">

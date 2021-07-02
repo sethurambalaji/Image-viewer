@@ -34,31 +34,34 @@ class Login extends Component {
             usernameRequired: 'dispNone',
             passwordRequired: 'dispNone',
             loginAuthentication: 'dispNone',
+            isLoggedIn: window.sessionStorage.getItem("access-token") === null ? false : true
         };
     }
 
 
 
     loginValidationHandler = () => {
-        let username = this.state.username
-        let password = this.state.password
-        let mockUsername = "admin"
-        let mockPassword = "8055"
-        let accessToken = "IGQVJVbjdZATkF3emhUdlEzNUJmUDJKMW9Iay1WMGEtS1FoYW40ZAzVKQmxiX0d3Q3oyMVducnRSNjdUeENOdmVlTVZAjQ2JabnFXWS05Ui1sRUh0d20tNTJYYmtBNjI5bzVfX1BOcG02UmFhcFl4LU1RVgZDZD"
-        if (username === "" || password === "") {
-            username === "" ? this.setState({ usernameRequired: 'dispBlock' }) : this.setState({ usernameRequired: 'dispNone' });
-            password === "" ? this.setState({ passwordRequired: 'dispBlock' }) : this.setState({ passwordRequired: 'dispNone' });
-        }
-        else {
-            if (mockUsername === username && mockPassword === password) {
-                window.sessionStorage.setItem("access-token",accessToken);
-                this.props.history.push('/home');
+        if (this.state.isLoggedIn === true) {
+            let username = this.state.username
+            let password = this.state.password
+            let mockUsername = "admin"
+            let mockPassword = "8055"
+            let accessToken = "IGQVJVbjdZATkF3emhUdlEzNUJmUDJKMW9Iay1WMGEtS1FoYW40ZAzVKQmxiX0d3Q3oyMVducnRSNjdUeENOdmVlTVZAjQ2JabnFXWS05Ui1sRUh0d20tNTJYYmtBNjI5bzVfX1BOcG02UmFhcFl4LU1RVgZDZD"
+            if (username === "" || password === "") {
+                username === "" ? this.setState({ usernameRequired: 'dispBlock' }) : this.setState({ usernameRequired: 'dispNone' });
+                password === "" ? this.setState({ passwordRequired: 'dispBlock' }) : this.setState({ passwordRequired: 'dispNone' });
             }
             else {
-                this.setState({ loginAuthentication: "dispBlock" })
+                if (mockUsername === username && mockPassword === password) {
+                    window.sessionStorage.setItem("access-token", accessToken);
+                    this.props.history.push('/home');
+                }
+                else {
+                    this.setState({ loginAuthentication: "dispBlock" })
+                }
             }
+            
         }
-
     }
 
     usernameInputChangeHandler = (e) => {
