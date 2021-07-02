@@ -6,25 +6,30 @@ import { GridList } from '@material-ui/core';
 import { GridListTile } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 import { withStyles } from '@material-ui/core/styles';
+import { Fab } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
+import EditIcon from '@material-ui/icons/Edit';
 
 const styles = theme => ({
-  avatar:{
-    width: theme.spacing(15),
-    height: theme.spacing(15),
-    backgroundColor: "red",
-  }
-
-
+    avatar: {
+        width: theme.spacing(15),
+        height: theme.spacing(15),
+        backgroundColor: "red",
+    },
+    GridList:{
+        margin: theme.spacing(0,15),
+    },
 });
 
 class Profile extends Component {
     constructor() {
         super();
         this.state = {
-            username: "",
+            username: "gmaster_balzz",
             usersFollowed: Math.floor(Math.random() * 50),
             followedByUsers: Math.floor(Math.random() * 50),
-            fullname: "Sethurambalaji",
+            fullName: "Sethurambalaji",
             albumDataMaster: [],
             albumDataCopy: [],
             imageDetailsMaster: [],
@@ -140,12 +145,42 @@ class Profile extends Component {
                     <div className="information-section">
 
 
-                        <Avatar alt={this.state.username} src={require("../../assets/profileImage.png")}
-                            variant="circle"
-                            className={classes.avatar+" avatarInfo"}/>
-                            
-                        
+
+                        <Grid container spacing={3} justify="flex-start">
+                            <Grid item xs={2} />
+                            <Grid item xs={2} style={{ paddingTop: 25 }}>
+                                <Avatar alt={this.state.username} src={require("../../assets/profileImage.png")}
+                                    variant="circle"
+                                    className={classes.avatar} />
+                            </Grid>
+                            {/* User info section. */}
+                            <Grid item xs={5} id='info-container'>
+                                <Typography variant="h4" component="h1" style={{ paddingBottom: 15 }}>
+                                    {this.state.username}
+                                </Typography>
+                                {/* Name Edit Modal. */}
+                                <Grid container spacing={3} justify="center" style={{ paddingBottom: 15 }}>
+                                    <Grid item xs={4}>
+                                        Posts:&nbsp;{this.state.feedCopy.length}
+                                    </Grid>
+                                    <Grid item xs={4}>
+                                        Follows:&nbsp;{this.state.usersFollowed}
+                                    </Grid>
+                                    <Grid item xs={4}>
+                                        Followed By:&nbsp;{this.state.followedByUsers}
+                                    </Grid>
+                                </Grid>
+                                <Typography variant="h6" component="h2" style={{ marginTop: 5 }}>
+                                    {this.state.fullName}&nbsp;&nbsp;
+                                    <Fab color="secondary" id="edit-name" aria-label="edit">
+                                        <EditIcon fontSize="small" />
+                                    </Fab>
+                                </Typography>
+                            </Grid>
+
+                        </Grid>
                     </div>
+                    <div className="imagePosts">
                     <GridList cols={3} cellHeight={300} spacing={1}>
                         {
 
@@ -157,6 +192,7 @@ class Profile extends Component {
                             ))
                         }
                     </GridList>
+                    </div>
                 </div>
 
 
