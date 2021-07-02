@@ -39,7 +39,7 @@ const styles = theme => ({
     },
     cardContent: {
         minHeight: 300,
-        width:"90%"
+        width: "90%"
     },
     margin: {
         margin: theme.spacing(1),
@@ -61,11 +61,11 @@ const styles = theme => ({
         overflow: 'hidden',
         height: '100%'
     },
-    InputLabel:{
-        marginLeft:"15px"
+    InputLabel: {
+        marginLeft: "15px"
     },
-    
-   
+
+
 });
 
 class Home extends Component {
@@ -79,31 +79,30 @@ class Home extends Component {
             tags: "#upgrad #reactjs #imageviewer #user #image",
             feed: [],
             feedCopy: [],
-            loggedIn:window.sessionStorage.getItem("access-token")===null?false:true
+            loggedIn: window.sessionStorage.getItem("access-token") === null ? false : true
         }
 
     }
 
     UNSAFE_componentWillMount() {
-        if(window.sessionStorage.getItem("access-token")!==null)
-        {
-        let data = null;
-        let xhr = new XMLHttpRequest();
-        let that = this;
-        xhr.addEventListener("readystatechange", function () {
-            if (this.readyState === 4) {
-                that.setState({ albumDataMaster: JSON.parse(this.responseText).data });
-                that.setState({ albumDataCopy: JSON.parse(this.responseText).data });
-                // get the image details for each image post
-                that.getImageDetails();
-            }
-        });
-        xhr.open(
-            "GET",
-            "https://graph.instagram.com/me/media?fields=id,caption&access_token=" +
-            window.sessionStorage.getItem("access-token")
-        );
-        xhr.send(data);
+        if (window.sessionStorage.getItem("access-token") !== null) {
+            let data = null;
+            let xhr = new XMLHttpRequest();
+            let that = this;
+            xhr.addEventListener("readystatechange", function () {
+                if (this.readyState === 4) {
+                    that.setState({ albumDataMaster: JSON.parse(this.responseText).data });
+                    that.setState({ albumDataCopy: JSON.parse(this.responseText).data });
+                    // get the image details for each image post
+                    that.getImageDetails();
+                }
+            });
+            xhr.open(
+                "GET",
+                "https://graph.instagram.com/me/media?fields=id,caption&access_token=" +
+                window.sessionStorage.getItem("access-token")
+            );
+            xhr.send(data);
         }
     }
 
@@ -222,46 +221,46 @@ class Home extends Component {
     render() {
         const { classes } = this.props;
         return (
-            (this.state.loggedIn===false) ? <Redirect to="/" />:
-            <div>
-                <Header {...this.props} baseUrl={this.props.baseUrl} searchImage={this.searchImage} />
-                <div className="GridContainer">
-                    <GridList cols={2} cellHeight={800} spacing={1}>
-                        {
+            (this.state.loggedIn === false) ? <Redirect to="/" /> :
+                <div>
+                    <Header {...this.props} baseUrl={this.props.baseUrl} searchImage={this.searchImage} />
+                    <div className="GridContainer">
+                        <GridList cols={2} cellHeight={800} spacing={1}>
+                            {
 
-                            this.state.feedCopy.map((post) => (
+                                this.state.feedCopy.map((post) => (
 
-                                <GridListTile key={post.id}>
-                                    <Card key={post.id} variant="outlined" className={classes.card}>
-                                        <CardHeader
-                                            avatar={
-                                                <Avatar variant="circle" className={classes.avatar}>
-                                                    S
-                                                </Avatar>
-                                            }
-                                            title={post.username}
-                                            subheader={new Date(post.timestamp).toLocaleString().replace(",", "")}
-                                        />
-                                        <CardContent className={classes.cardContent}>
-                                            <CardMedia style={{ height: 0, paddingTop: '80%', marginBottom: 10 }}
-                                                image={post.media_url}
-                                                height="140" />
-                                            <Divider variant="middle" />
-                                            <Typography variant="h6" gutterBottom>{post.caption}</Typography>
-                                            <Typography variant="subtitle1" color="primary" gutterBottom>{this.state.tags}</Typography>
-                                            <div className='likes'>
-                                                {
-                                                    post.isLiked ?
-                                                        <FavoriteIcon fontSize='default' style={{ color: "red" }} onClick={() => this.likeHandler(post)} />
-                                                        :
-                                                        <FavoriteBorderIcon fontSize='default' onClick={() => this.likeHandler(post)} />
+                                    <GridListTile key={post.id}>
+                                        <Card key={post.id} variant="outlined" className={classes.card}>
+                                            <CardHeader
+                                                avatar={
+                                                    <Avatar variant="circle" className={classes.avatar}>
+                                                        S
+                                                    </Avatar>
                                                 }
-                                                <Typography>
-                                                    <span>&nbsp;{post.likes + ' likes'}</span>
-                                                </Typography>
-                                            </div><br />
-                                            <div className="comments-section">
-                                                
+                                                title={post.username}
+                                                subheader={new Date(post.timestamp).toLocaleString().replace(",", "")}
+                                            />
+                                            <CardContent className={classes.cardContent}>
+                                                <CardMedia style={{ height: 0, paddingTop: '80%', marginBottom: 10 }}
+                                                    image={post.media_url}
+                                                    height="140" />
+                                                <Divider variant="middle" />
+                                                <Typography variant="h6" gutterBottom>{post.caption}</Typography>
+                                                <Typography variant="subtitle1" color="primary" gutterBottom>{this.state.tags}</Typography>
+                                                <div className='likes'>
+                                                    {
+                                                        post.isLiked ?
+                                                            <FavoriteIcon fontSize='default' style={{ color: "red" }} onClick={() => this.likeHandler(post)} />
+                                                            :
+                                                            <FavoriteBorderIcon fontSize='default' onClick={() => this.likeHandler(post)} />
+                                                    }
+                                                    <Typography>
+                                                        <span>&nbsp;{post.likes + ' likes'}</span>
+                                                    </Typography>
+                                                </div><br />
+                                                <div className="comments-section">
+
                                                     {post.comments.map((comment, i) => (
 
                                                         <section key={i}><Typography>
@@ -270,36 +269,36 @@ class Home extends Component {
                                                     ))}
 
 
-                                              
-                                            </div>
 
-                                            <div className="addComentsSection">
-                                                <FormControl className={classes.formControl}>
-                                                    <InputLabel htmlFor={"addComment"+post.id}>Add Comment</InputLabel>
-                                                    <Input id={"addComment "+post.id}
-                                                        className="addComment"
-                                                        onChange={(e) => this.typeCommentHandler(e, post)}
-                                                        value={post.addedComment} />
-                                                </FormControl>
-                                                <div className='add-button'>
-                                                    <FormControl>
-                                                        <Button
-                                                                variant='contained'
-                                                                 color='primary'
-                                                                 onClick={() => this.addCommentHandler(post)}>ADD</Button>
-                                                    </FormControl>
                                                 </div>
 
-                                            </div><br />
-                                        </CardContent>
-                                    </Card>
-                                </GridListTile>
-                            ))
-                        }
-                    </GridList>
-                </div>
+                                                <div className="addComentsSection">
+                                                    <FormControl className={classes.formControl}>
+                                                        <InputLabel htmlFor={"addComment" + post.id}>Add Comment</InputLabel>
+                                                        <Input id={"addComment " + post.id}
+                                                            className="addComment"
+                                                            onChange={(e) => this.typeCommentHandler(e, post)}
+                                                            value={post.addedComment} />
+                                                    </FormControl>
+                                                    <div className='add-button'>
+                                                        <FormControl>
+                                                            <Button
+                                                                variant='contained'
+                                                                color='primary'
+                                                                onClick={() => this.addCommentHandler(post)}>ADD</Button>
+                                                        </FormControl>
+                                                    </div>
 
-            </div>
+                                                </div><br />
+                                            </CardContent>
+                                        </Card>
+                                    </GridListTile>
+                                ))
+                            }
+                        </GridList>
+                    </div>
+
+                </div>
         )
     }
 }

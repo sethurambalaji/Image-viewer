@@ -41,7 +41,7 @@ class Login extends Component {
 
 
     loginValidationHandler = () => {
-        if (this.state.isLoggedIn === true) {
+   
             let username = this.state.username
             let password = this.state.password
             let mockUsername = "admin"
@@ -60,8 +60,8 @@ class Login extends Component {
                     this.setState({ loginAuthentication: "dispBlock" })
                 }
             }
-            
-        }
+
+        
     }
 
     usernameInputChangeHandler = (e) => {

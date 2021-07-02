@@ -112,7 +112,7 @@ const Header = (props) => {
                 isLoggedIn ?
                     <div className="header-right">
 
-                        {window.location.href.includes("/home")===true ?
+                        {window.location.href.includes("/home") === true ?
 
                             <div className={classes.search + " searchBar"}>
                                 <Input className='search'
