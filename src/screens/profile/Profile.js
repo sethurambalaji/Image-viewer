@@ -41,12 +41,9 @@ class Profile extends Component {
             followedByUsers: Math.floor(Math.random() * 50),
             fullName: "Sethurambalaji",
             albumDataMaster: [],
-            albumDataCopy: [],
             imageDetailsMaster: [],
-            imageDetailsCopy: [],
             tags: "#upgrad #reactjs #imageviewer #user #image",
             feed: [],
-            feedCopy: [],
             isloggedIn: window.sessionStorage.getItem("access-token") === null ? false : true,
             nameEditModalOpen:false,
             nameEditModalClose:true,
@@ -62,7 +59,6 @@ class Profile extends Component {
             xhr.addEventListener("readystatechange", function () {
                 if (this.readyState === 4) {
                     that.setState({ albumDataMaster: JSON.parse(this.responseText).data });
-                    that.setState({ albumDataCopy: JSON.parse(this.responseText).data });
                     // get the image details for each image post
                     that.getImageDetails();
                 }
@@ -94,12 +90,8 @@ class Profile extends Component {
                         JSON.parse(this.responseText)
                     ),
                 });
-                that.setState({
-                    imageDetailsCopy: that.state.imageDetailsCopy.concat(
-                        JSON.parse(this.responseText)
-                    ),
-                });
-                that.setPostDetails(that.state.imageDetailsCopy);
+               
+                that.setPostDetails(that.state.imageDetailsMaster);
             }
 
         });
@@ -132,13 +124,11 @@ class Profile extends Component {
         })
 
         this.setState({ feed: arr })
-        this.setState({ feedCopy: this.state.feed })
-        console.log(this.state.feedCopy)
     }
 
     captionHandler = (id) => {
         let imageData = [];
-        imageData = this.state.albumDataCopy.find((post) => {
+        imageData = this.state.albumDataMaster.find((post) => {
             return post.id === id;
         });
         if (typeof imageData.caption === "undefined") {
@@ -205,7 +195,7 @@ class Profile extends Component {
                                 {/* Name Edit Modal. */}
                                 <Grid container spacing={3} justify="center" style={{ paddingBottom: 15 }}>
                                     <Grid item xs={4}>
-                                        Posts:&nbsp;{this.state.feedCopy.length}
+                                        Posts:&nbsp;{this.state.feed.length}
                                     </Grid>
                                     <Grid item xs={4}>
                                         Follows:&nbsp;{this.state.usersFollowed}
@@ -246,7 +236,7 @@ class Profile extends Component {
                     <GridList cols={3} cellHeight={300} spacing={1}>
                         {
 
-                            this.state.feedCopy.map((post) => (
+                            this.state.feed.map((post) => (
 
                                 <GridListTile key={post.id} alt={post.caption}>
                                     <img src={post.media_url} alt={post.caption}></img>
