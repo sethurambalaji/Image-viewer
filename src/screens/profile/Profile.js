@@ -117,21 +117,22 @@ class Profile extends Component {
             (this.state.isloggedIn === false) ? <Redirect to="/" /> :
                 <div>
                 <Header/>
-                <div>Profile Page
+                <div>
+
+                    Account Page Header
                
                 </div>
-                <GridList cols={3} cellHeight={100} spacing={1}>
+                <GridList cols={3} cellHeight={300} spacing={1}>
                             {
 
                                 this.state.feedCopy.map((post) => (
 
-                                    <ul>
-                                        <li>{post.id}</li>
-                                        <li>{post.media_url}</li>
-                                        <li>{post.caption}</li>
-                                    </ul>
+                                    <GridListTile key={post.id} alt={post.caption}>
+                                    <img src={post.media_url} alt={post.caption}></img>
+                                    </GridListTile>
                                 ))
-                            }                </GridList>
+                            } 
+                </GridList>
                 </div>
             
            
