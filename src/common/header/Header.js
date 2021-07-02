@@ -143,7 +143,18 @@ const Header = (props) => {
                                 onClose={handleClose}
                                 style={{ top: "38px" }}
                             >
-                                <MenuItem onClick={myAccountClickHandler}>My account</MenuItem>
+                               {
+                                     (window.location.href.includes("/home") === true) ?
+                                        <MenuItem onClick={myAccountClickHandler}>My account</MenuItem>
+                                       :
+                                       null
+                               }
+                              
+                            
+                                 
+                               
+
+                               
                                 <MenuItem onClick={logoutHandler}> Logout</MenuItem>
                             </Menu>
 
