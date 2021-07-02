@@ -131,9 +131,9 @@ const Header = (props) => {
 
                         <div className="avatarHeader">
                             <Button className="Header-avatar-button" aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
-                                <Avatar variant="circle" className={"avatarIcon " + classes.avatar}>
-                                    S
-                                </Avatar>
+                                <Avatar src={require("../../assets/profileImage.png")} variant="circle" className={"avatarIcon " + classes.avatar}/>
+                                    
+                               
                             </Button>
                             <Menu
                                 id="simple-menu"
@@ -143,18 +143,12 @@ const Header = (props) => {
                                 onClose={handleClose}
                                 style={{ top: "38px" }}
                             >
-                               {
-                                     (window.location.href.includes("/home") === true) ?
+                                {
+                                    (window.location.href.includes("/home") === true) ?
                                         <MenuItem onClick={myAccountClickHandler}>My account</MenuItem>
-                                       :
-                                       null
-                               }
-                              
-                            
-                                 
-                               
-
-                               
+                                        :
+                                        null
+                                }
                                 <MenuItem onClick={logoutHandler}> Logout</MenuItem>
                             </Menu>
 

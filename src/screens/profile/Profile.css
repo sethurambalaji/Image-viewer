@@ -1,0 +1,13 @@
+.avatar{
+    background-color: red;
+
+}
+
+.information-section{
+    height: 200px;
+}
+.avatarInfo{
+    display: inline-block;
+    top: 40px;
+    left: 281px;
+}

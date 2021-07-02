@@ -234,9 +234,9 @@ class Home extends Component {
                                         <Card key={post.id} variant="outlined" className={classes.card}>
                                             <CardHeader
                                                 avatar={
-                                                    <Avatar variant="circle" className={classes.avatar}>
-                                                        S
-                                                    </Avatar>
+                                                    <Avatar src={require("../../assets/profileImage.png")}
+                                                     variant="circle" className={classes.avatar}/>
+                                             
                                                 }
                                                 title={post.username}
                                                 subheader={new Date(post.timestamp).toLocaleString().replace(",", "")}
@@ -302,4 +302,4 @@ class Home extends Component {
         )
     }
 }
-export default withStyles(styles)(Home);;
+export default withStyles(styles)(Home);

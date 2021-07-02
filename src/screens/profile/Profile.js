@@ -4,10 +4,27 @@ import Header from '../../common/header/Header';
 import { Redirect } from 'react-router';
 import { GridList } from '@material-ui/core';
 import { GridListTile } from '@material-ui/core';
+import Avatar from '@material-ui/core/Avatar';
+import { withStyles } from '@material-ui/core/styles';
+
+const styles = theme => ({
+  avatar:{
+    width: theme.spacing(15),
+    height: theme.spacing(15),
+    backgroundColor: "red",
+  }
+
+
+});
+
 class Profile extends Component {
-    constructor(){
+    constructor() {
         super();
-        this.state ={
+        this.state = {
+            username: "",
+            usersFollowed: Math.floor(Math.random() * 50),
+            followedByUsers: Math.floor(Math.random() * 50),
+            fullname: "Sethurambalaji",
             albumDataMaster: [],
             albumDataCopy: [],
             imageDetailsMaster: [],
@@ -15,7 +32,7 @@ class Profile extends Component {
             tags: "#upgrad #reactjs #imageviewer #user #image",
             feed: [],
             feedCopy: [],
-            isloggedIn:window.sessionStorage.getItem("access-token")===null?false:true
+            isloggedIn: window.sessionStorage.getItem("access-token") === null ? false : true
         }
     }
 
@@ -112,31 +129,38 @@ class Profile extends Component {
         return imageData.caption;
     }
 
+
+
     render() {
+        const { classes } = this.props;
         return (
             (this.state.isloggedIn === false) ? <Redirect to="/" /> :
                 <div>
-                <Header/>
-                <div>
+                    <Header />
+                    <div className="information-section">
 
-                    Account Page Header
-               
-                </div>
-                <GridList cols={3} cellHeight={300} spacing={1}>
-                            {
 
-                                this.state.feedCopy.map((post) => (
+                        <Avatar alt={this.state.username} src={require("../../assets/profileImage.png")}
+                            variant="circle"
+                            className={classes.avatar+" avatarInfo"}/>
+                            
+                        
+                    </div>
+                    <GridList cols={3} cellHeight={300} spacing={1}>
+                        {
 
-                                    <GridListTile key={post.id} alt={post.caption}>
+                            this.state.feedCopy.map((post) => (
+
+                                <GridListTile key={post.id} alt={post.caption}>
                                     <img src={post.media_url} alt={post.caption}></img>
-                                    </GridListTile>
-                                ))
-                            } 
-                </GridList>
+                                </GridListTile>
+                            ))
+                        }
+                    </GridList>
                 </div>
-            
-           
+
+
         )
     }
 }
-export default Profile;
+export default withStyles(styles)(Profile);
