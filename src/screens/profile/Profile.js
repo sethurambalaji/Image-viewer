@@ -10,7 +10,12 @@ import { Fab } from '@material-ui/core';
 import { Typography } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import EditIcon from '@material-ui/icons/Edit';
-
+import { Modal } from '@material-ui/core';
+import { Input } from '@material-ui/core';
+import { InputLabel } from '@material-ui/core';
+import { FormControl } from '@material-ui/core';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import { Button } from '@material-ui/core';
 const styles = theme => ({
     avatar: {
         width: theme.spacing(15),
@@ -37,7 +42,10 @@ class Profile extends Component {
             tags: "#upgrad #reactjs #imageviewer #user #image",
             feed: [],
             feedCopy: [],
-            isloggedIn: window.sessionStorage.getItem("access-token") === null ? false : true
+            isloggedIn: window.sessionStorage.getItem("access-token") === null ? false : true,
+            nameEditModalOpen:false,
+            nameEditModalClose:true,
+            nameRequireLabel:"hide"
         }
     }
 
@@ -134,7 +142,38 @@ class Profile extends Component {
         return imageData.caption;
     }
 
+    openEditNameModalHandler = () => {
+        this.setState({ nameEditModalOpen: true, nameEditModalClose: false })
+    }
 
+
+    closeEditNameModalHandler = () => {
+        this.setState({newFullName:''})
+        this.setState({nameRequireLabel:"hide"})
+        this.setState({ nameEditModalOpen: false, nameEditModalClose: true })
+    }
+
+    editNameFieldChangeHandler = (e) => {
+       this.setState({ newFullName: e.target.value })
+        
+    }
+
+    editNameUpdateButtonHandler = () => {
+        if (this.state.newFullName == null || this.state.newFullName.trim() === "") {
+            this.setState({
+                nameRequireLabel: "show"
+            })
+        } else {
+            this.setState({
+                fullName: this.state.newFullName,
+                newFullName: '',
+                nameRequireLabel: "hide"
+            })
+
+            this.closeEditNameModalHandler();
+        }
+
+    }
 
     render() {
         const { classes } = this.props;
@@ -172,10 +211,28 @@ class Profile extends Component {
                                 </Grid>
                                 <Typography variant="h6" component="h2" style={{ marginTop: 5 }}>
                                     {this.state.fullName}&nbsp;&nbsp;
-                                    <Fab color="secondary" id="edit-name" aria-label="edit">
+                                    <Fab color="secondary" id="edit-name" aria-label="edit" onClick={this.openEditNameModalHandler}>
                                         <EditIcon fontSize="small" />
                                     </Fab>
                                 </Typography>
+                                <Modal open={this.state.nameEditModalOpen} onClose={this.closeEditNameModalHandler} >
+                                    <div className="edit-modal" >
+                                        <Typography variant="h5" style={{ paddingBottom: 15 }}>
+                                            Edit
+                                        </Typography>
+                                        <FormControl required>
+                                            <InputLabel htmlFor="fullName">Full Name</InputLabel>
+                                            <Input id="fullName" type="text" onChange={this.editNameFieldChangeHandler} />
+                                            <FormHelperText>
+                                                <span className={this.state.nameRequireLabel} style={{ color: "red" }}>required</span>
+                                            </FormHelperText>
+                                        </FormControl>
+                                        <div style={{ marginTop: 25 }}>
+                                            <Button variant="contained" color="primary"
+                                                onClick={this.editNameUpdateButtonHandler}>UPDATE</Button>
+                                        </div>
+                                    </div>
+                                </Modal>
                             </Grid>
 
                         </Grid>
