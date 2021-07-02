@@ -29,7 +29,8 @@ const styles = theme => ({
         '&:hover': {
             cursor: 'pointer',
         }    
-    }
+    },
+    openedImageObjModal: { display: 'flex', justifyContent: 'center', alignItems: 'center' }
 });
 
 class Profile extends Component {
@@ -47,7 +48,8 @@ class Profile extends Component {
             isloggedIn: window.sessionStorage.getItem("access-token") === null ? false : true,
             nameEditModalOpen:false,
             nameEditModalClose:true,
-            nameRequireLabel:"hide"
+            nameRequireLabel:"hide",
+            imageDetailsModal:false,
         }
     }
 
@@ -170,6 +172,17 @@ class Profile extends Component {
 
     }
 
+    postClickHandler = (post) =>{
+        console.log("postClickHandler");
+        console.log(post.media_url);
+        this.setState({imageDetailsModal:true})
+
+    }
+
+    closeImageDetailsModal = () => {
+        this.setState({imageDetailsModal:false})
+    }
+
     render() {
         const { classes } = this.props;
         return (
@@ -238,12 +251,20 @@ class Profile extends Component {
 
                             this.state.feed.map((post) => (
 
-                                <GridListTile key={post.id} alt={post.caption}>
+                                <GridListTile key={post.id} alt={post.caption} onClick={() => this.postClickHandler(post)}>
                                     <img src={post.media_url} alt={post.caption}></img>
                                 </GridListTile>
                             ))
                         }
                     </GridList>
+                    <Modal
+                       open={this.state.imageDetailsModal}
+                       onClose={this.closeImageDetailsModal}
+                       className={classes.openedImageObjModal}
+                       >
+                       <div>Image Details Modal</div>
+
+                       </Modal>
                     </div>
                 </div>
 
