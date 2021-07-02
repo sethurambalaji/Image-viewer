@@ -25,6 +25,11 @@ const styles = theme => ({
     GridList:{
         margin: theme.spacing(0,15),
     },
+    GridListTile:{
+        '&:hover': {
+            cursor: 'pointer',
+        }    
+    }
 });
 
 class Profile extends Component {
@@ -210,7 +215,7 @@ class Profile extends Component {
                                     </Grid>
                                 </Grid>
                                 <Typography variant="h6" component="h2" style={{ marginTop: 5 }}>
-                                    {this.state.fullName}&nbsp;&nbsp;
+                                    {this.state.fullName}&nbsp;&nbsp;&nbsp;&nbsp;
                                     <Fab color="secondary" id="edit-name" aria-label="edit" onClick={this.openEditNameModalHandler}>
                                         <EditIcon fontSize="small" />
                                     </Fab>

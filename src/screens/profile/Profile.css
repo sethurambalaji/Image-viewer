@@ -39,3 +39,7 @@
 .image-on-grid{
     cursor: pointer;
 }
+
+.MuiGridListTile-tile:hover{
+    cursor: pointer;
+}
