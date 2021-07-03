@@ -300,7 +300,7 @@ class Home extends Component {
                                                     </div>
 
                                                 </div><br />
-                                            </CardContent>
+                                            </CardContent><br />
                                         </Card>
                                     </GridListTile>
                                 ))
