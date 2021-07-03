@@ -187,6 +187,8 @@ class Profile extends Component {
     postClickHandler = (post) => {
         console.log("postClickHandler");
         console.log(post.media_url);
+        post.comments.push("comment1");
+        post.comments.push("comment2");
         this.setState({ imageDetailsModal: true })
         this.setState({ selectedImage: post })
 
@@ -298,11 +300,14 @@ class Profile extends Component {
                                         <div className={classes.openedImageObjContainerRow22}>
                                             <div>
                                                 <Typography component="p" style={{ fontWeight: 'bold', marginLeft: '5px', paddingTop: '8px' }}>
-                                                 {this.state.selectedImage.caption}
+                                                    {this.state.selectedImage.caption}
                                                 </Typography>
                                                 <Typography style={{ color: '#4dabf5', marginLeft: '5px' }} component="p" >
                                                     {this.state.tags}
                                                 </Typography>
+                                                {this.state.selectedImage.comments.map((comment, i) => (
+                                                  <Typography key={i} component="p" style={{ fontWeight: 'bold' }}>{this.state.username} :&nbsp;{comment}</Typography>
+                                                ))}
                                             </div>
                                         </div>
                                     </div>
