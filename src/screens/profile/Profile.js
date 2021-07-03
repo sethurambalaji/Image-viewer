@@ -16,7 +16,9 @@ import { InputLabel } from '@material-ui/core';
 import { FormControl } from '@material-ui/core';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import { Button } from '@material-ui/core';
-import Container from '@material-ui/core/Container';
+import FavoriteIconBorder from '@material-ui/icons/FavoriteBorder';
+import FavoriteIconFill from '@material-ui/icons/Favorite';
+import IconButton from '@material-ui/core/IconButton';
 const styles = theme => ({
     avatar: {
         width: theme.spacing(15),
@@ -187,8 +189,8 @@ class Profile extends Component {
     postClickHandler = (post) => {
         console.log("postClickHandler");
         console.log(post.media_url);
-        post.comments.push("comment1");
-        post.comments.push("comment2");
+        // post.comments.push("comment1");
+        // post.comments.push("comment2");
         this.setState({ imageDetailsModal: true })
         this.setState({ selectedImage: post })
 
@@ -196,6 +198,16 @@ class Profile extends Component {
 
     closeImageDetailsModal = () => {
         this.setState({ imageDetailsModal: false })
+    }
+
+    likeHandler = (post) => {
+        let index = this.state.feed.findIndex(postLiked => postLiked.id === post.id);
+        var stateCopy = Object.assign({}, this.state);
+        stateCopy.feed[index].likes = post.isLiked === true ? post.likes - 1 : post.likes + 1;
+        stateCopy.feed[index].isLiked = !post.isLiked
+        stateCopy.selectedImage.likes = stateCopy.feed[index].likes;
+        stateCopy.selectedImage.isLiked =  stateCopy.feed[index].isLiked;
+        this.setState(stateCopy);
     }
 
     render() {
@@ -306,8 +318,20 @@ class Profile extends Component {
                                                     {this.state.tags}
                                                 </Typography>
                                                 {this.state.selectedImage.comments.map((comment, i) => (
-                                                  <Typography key={i} component="p" style={{ fontWeight: 'bold' }}>{this.state.username} :&nbsp;{comment}</Typography>
+                                                    <Typography key={i} component="p" style={{ fontWeight: 'bold' }}>{this.state.username} :&nbsp;{comment}</Typography>
                                                 ))}
+                                            </div>
+                                            <div>
+                                                <div className="row">
+                                                <Typography component="p" style={{ fontWeight: 'bold' }}>
+                                                    <IconButton aria-label="Add to favorites" onClick={() => this.likeHandler(this.state.selectedImage)}>
+                                                        {this.state.selectedImage.isLiked && <FavoriteIconFill style={{ color: '#F44336' }} />}
+                                                        {!this.state.selectedImage.isLiked && <FavoriteIconBorder />}
+                                                    </IconButton>
+                                                   
+                                                        {this.state.selectedImage.likes} likes
+                                                    </Typography>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
