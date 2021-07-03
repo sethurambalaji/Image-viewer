@@ -15,7 +15,6 @@
     margin-left: 10px;
     display: inline-block;
 }
-
 .addComentsSection{
     display: block;
     width: 100%;
@@ -27,13 +26,11 @@
     max-width: 370px;
     min-width: 370px;
 }
-
 .comments-section{
     max-height: 60px;
     min-height: 60px;
     overflow: auto;
 }
-
 .Home-formControl-8 {
     margin: 8px;
     max-width: 380px;

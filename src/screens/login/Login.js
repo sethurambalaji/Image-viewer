@@ -10,6 +10,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { Input, InputLabel } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 
+//styling
 const styles = theme => ({
     root: {
         flexGrow: 1,
@@ -23,6 +24,7 @@ const styles = theme => ({
     },
 });
 
+//login - class component
 class Login extends Component {
 
     constructor() {
@@ -31,15 +33,15 @@ class Login extends Component {
 
             username: "",
             password: "",
-            usernameRequired: 'dispNone',
-            passwordRequired: 'dispNone',
-            loginAuthentication: 'dispNone',
+            usernameRequired: 'dispNone',//Helper text state
+            passwordRequired: 'dispNone', //Helper text state
+            loginAuthentication: 'dispNone', //Helper text state
             isLoggedIn: window.sessionStorage.getItem("access-token") === null ? false : true
         };
     }
 
 
-
+    //Login Validation- checks username, Password and so stores access token in session
     loginValidationHandler = () => {
    
             let username = this.state.username
@@ -54,7 +56,7 @@ class Login extends Component {
             else {
                 if (mockUsername === username && mockPassword === password) {
                     window.sessionStorage.setItem("access-token", accessToken);
-                    this.props.history.push('/home');
+                    this.props.history.push('/home');//navigates to Home Page
                 }
                 else {
                     this.setState({ loginAuthentication: "dispBlock" })
@@ -63,13 +65,15 @@ class Login extends Component {
 
         
     }
-
+    
+    // user Input on change Handler
     usernameInputChangeHandler = (e) => {
         this.setState({ username: e.target.value })
         this.setState({ usernameRequired: 'dispNone' })
 
     }
 
+    // password input onchange handler
     passwordInputChangeHandler = (e) => {
         this.setState({ password: e.target.value })
         this.setState({ passwordRequired: 'dispNone' })
@@ -84,12 +88,14 @@ class Login extends Component {
                 <div className="login-card-container">
                     <Card>
                         <CardContent>
+                            {/* Login - title */}
                             <FormControl className={classes.formControl}>
                                 <Typography gutterBottom variant="h5" component="h2">
                                     LOGIN
                                 </Typography>
                             </FormControl><br />
-
+                            
+                            {/* username */}
                             <FormControl className={classes.formControl} required>
                                 <InputLabel htmlFor="userName">Username</InputLabel>
                                 <Input id="userName" type="text" username={this.state.username} onChange={this.usernameInputChangeHandler} />
@@ -97,7 +103,8 @@ class Login extends Component {
                                     <span className='redError'>required</span>
                                 </FormHelperText>
                             </FormControl><br />
-
+                            
+                            {/* password */}
                             <FormControl className={classes.formControl} required>
                                 <InputLabel htmlFor="password">Password</InputLabel>
                                 <Input id="password" type="password" password={this.state.password} onChange={this.passwordInputChangeHandler} />
@@ -105,11 +112,13 @@ class Login extends Component {
                                     <span className='redError'>required</span>
                                 </FormHelperText>
                             </FormControl><br />
-
+                            
+                            {/* required text - incorrect credentials */}
                             <FormHelperText className={this.state.loginAuthentication}>
                                 <span className='redError' authentication={this.state.loginAuthentication}>Incorrect username and/or password</span>
                             </FormHelperText><br />
-
+                            
+                            {/* login Button */}
                             <Button variant='contained' color='primary'
                                 style={{ textAlign: 'center' }}
                                 onClick={this.loginValidationHandler}

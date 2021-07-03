@@ -2,7 +2,6 @@
     background-color: red;
 
 }
-
 .information-section{
     height: 200px;
 }
@@ -24,7 +23,6 @@
     border: 1px solid rgba(0,0,0,.2);
     border-radius: .4rem;
 }
-
 .image-details-modal{
 height: 300px;
 width: 730px;
@@ -37,32 +35,23 @@ position: absolute;
     border: 1px solid rgba(0,0,0,.2);
     border-radius: .4rem;
 }
-
-/* For Name Change helper text. ('required') */
 .hide {
     display: none;
 }
-
-/* For Name Change helper text. ('required') */
 .show {
     display: block;
 }
-
-/* Image placed on the grid should be clickable. */
 .image-on-grid{
     cursor: pointer;
 }
-
 .MuiGridListTile-tile:hover{
     cursor: pointer;
 }
-
 .comments-section{
     max-height: 95px;
     min-height: 95px;
     overflow: auto;
 }
-
 .addCommentSection{
     display: flex;
 }

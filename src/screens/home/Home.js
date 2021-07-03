@@ -18,6 +18,8 @@ import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import { Button } from '@material-ui/core';
 import { Redirect } from 'react-router';
+
+// with styles
 const styles = theme => ({
     root: {
         minWidth: 345,
@@ -64,26 +66,27 @@ const styles = theme => ({
     InputLabel: {
         marginLeft: "15px"
     },
-
-
 });
 
+// Home - class Component
 class Home extends Component {
     constructor() {
         super();
         this.state = {
             albumDataMaster: [],
-            albumDataCopy: [],
+            albumDataCopy: [], //Copy state used for filter feature
             imageDetailsMaster: [],
-            imageDetailsCopy: [],
+            imageDetailsCopy: [],  //Copy state used for filter feature
             tags: "#upgrad #reactjs #imageviewer #user #image",
             feed: [],
-            feedCopy: [],
+            feedCopy: [],  //Copy state used for filter feature
             loggedIn: window.sessionStorage.getItem("access-token") === null ? false : true
         }
 
     }
 
+
+    //getting data from API 1
     UNSAFE_componentWillMount() {
         if (window.sessionStorage.getItem("access-token") !== null) {
             let data = null;
@@ -113,6 +116,8 @@ class Home extends Component {
             return this.getImageDetailsById(image.id);
         });
     };
+
+    //getting data from API 2 using API 1 data 
     getImageDetailsById = (id) => {
         let that = this;
         let xhr = new XMLHttpRequest();
@@ -143,9 +148,9 @@ class Home extends Component {
         xhr.send(data);
     };
 
+    //Integrating API1 and API2 data to a single object and assigned as state
     setPostDetails = (albumDetails) => {
         let arr = this.state.feed;
-        // console.log("arr: " + arr)
         let feed = {};
         albumDetails.forEach((post) => {
             feed.id = post.id;
@@ -160,12 +165,11 @@ class Home extends Component {
             arr = arr.filter((ele, ind) => ind === arr.findIndex(elem => elem.id === ele.id))
 
         })
-
         this.setState({ feed: arr })
         this.setState({ feedCopy: this.state.feed })
-        // console.log(this.state.feedCopy)
     }
 
+    //Filter happens here for Search Image function 
     filterImages = (searchImageCaption) => {
         let filterImages = this.state.feed;
         if (searchImageCaption.length !== 0) {
@@ -182,6 +186,7 @@ class Home extends Component {
         this.filterImages(searchImageCaption)
     }
 
+    // getting caption for each post, if no caption, caption hardcoded
     captionHandler = (id) => {
         let imageData = [];
         imageData = this.state.albumDataCopy.find((post) => {
@@ -193,6 +198,7 @@ class Home extends Component {
         return imageData.caption;
     }
 
+    //function to handle like button and display likes correspondingly
     likeHandler = (post) => {
         let index = this.state.feedCopy.findIndex(postLiked => postLiked.id === post.id);
         var stateCopy = Object.assign({}, this.state);
@@ -201,6 +207,7 @@ class Home extends Component {
         this.setState(stateCopy);
     }
 
+    // user types comments handled here
     typeCommentHandler = (e, post) => {
         let index = this.state.feedCopy.findIndex(postLiked => postLiked.id === post.id);
         var stateCopy = Object.assign({}, this.state);
@@ -208,6 +215,7 @@ class Home extends Component {
         this.setState(stateCopy);
     }
 
+    //add comment button functionality
     addCommentHandler = (post) => {
         let index = this.state.feedCopy.findIndex(postLiked => postLiked.id === post.id);
         var stateCopy = Object.assign({}, this.state);
@@ -215,8 +223,6 @@ class Home extends Component {
         stateCopy.feedCopy[index].addedComment = '';
         this.setState(stateCopy);
     }
-
-
 
     render() {
         const { classes } = this.props;
@@ -229,25 +235,28 @@ class Home extends Component {
                             {
 
                                 this.state.feedCopy.map((post) => (
-
                                     <GridListTile key={post.id}>
                                         <Card key={post.id} variant="outlined" className={classes.card}>
+                                            {/* card Header - profile pic, username,timestamp */}
                                             <CardHeader
                                                 avatar={
                                                     <Avatar src={require("../../assets/profileImage.png")}
-                                                     variant="circle" className={classes.avatar}/>
-                                             
+                                                        variant="circle" className={classes.avatar} />
+
                                                 }
                                                 title={post.username}
                                                 subheader={new Date(post.timestamp).toLocaleString().replace(",", "")}
                                             />
                                             <CardContent className={classes.cardContent}>
+                                                {/* Image */}
                                                 <CardMedia style={{ height: 0, paddingTop: '80%', marginBottom: 10 }}
                                                     image={post.media_url}
                                                     height="140" />
                                                 <Divider variant="middle" />
+                                                {/* caption and tags */}
                                                 <Typography variant="h6" gutterBottom>{post.caption}</Typography>
                                                 <Typography variant="subtitle1" color="primary" gutterBottom>{this.state.tags}</Typography>
+                                                {/* Likes section */}
                                                 <div className='likes'>
                                                     {
                                                         post.isLiked ?
@@ -259,6 +268,7 @@ class Home extends Component {
                                                         <span>&nbsp;{post.likes + ' likes'}</span>
                                                     </Typography>
                                                 </div><br />
+                                                {/* comments section */}
                                                 <div className="comments-section">
 
                                                     {post.comments.map((comment, i) => (
@@ -271,7 +281,7 @@ class Home extends Component {
 
 
                                                 </div>
-
+                                                {/* add comments */}
                                                 <div className="addComentsSection">
                                                     <FormControl className={classes.formControl}>
                                                         <InputLabel htmlFor={"addComment" + post.id}>Add Comment</InputLabel>
@@ -297,7 +307,6 @@ class Home extends Component {
                             }
                         </GridList>
                     </div>
-
                 </div>
         )
     }
