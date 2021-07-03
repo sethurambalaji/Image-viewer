@@ -56,3 +56,13 @@ position: absolute;
 .MuiGridListTile-tile:hover{
     cursor: pointer;
 }
+
+.comments-section{
+    max-height: 95px;
+    min-height: 95px;
+    overflow: auto;
+}
+
+.addCommentSection{
+    display: flex;
+}

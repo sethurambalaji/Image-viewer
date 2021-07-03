@@ -37,7 +37,8 @@ const styles = theme => ({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: "white-smoke"
+        backgroundColor: "white-smoke",
+        OverflowEvent:"auto"
     },
     openedImageObjContainer: { display: 'flex', flexDirection: 'row', backgroundColor: "#fff", width: '70%', height: '70%' },
     openedImageObjContainerRow1: { width: '50%', padding: 10 },
@@ -64,6 +65,7 @@ class Profile extends Component {
             nameRequireLabel: "hide",
             imageDetailsModal: false,
             selectedImage: null,
+            addedComment: ""
         }
     }
 
@@ -198,6 +200,7 @@ class Profile extends Component {
 
     closeImageDetailsModal = () => {
         this.setState({ imageDetailsModal: false })
+        this.setState({ addedComment: "" })
     }
 
     likeHandler = (post) => {
@@ -206,7 +209,27 @@ class Profile extends Component {
         stateCopy.feed[index].likes = post.isLiked === true ? post.likes - 1 : post.likes + 1;
         stateCopy.feed[index].isLiked = !post.isLiked
         stateCopy.selectedImage.likes = stateCopy.feed[index].likes;
-        stateCopy.selectedImage.isLiked =  stateCopy.feed[index].isLiked;
+        stateCopy.selectedImage.isLiked = stateCopy.feed[index].isLiked;
+        this.setState(stateCopy);
+    }
+
+    typeCommentHandler = (e, post) => {
+
+        let index = this.state.feed.findIndex(postLiked => postLiked.id === post.id);
+        var stateCopy = Object.assign({}, this.state);
+        stateCopy.feed[index].addedComment = e.target.value;
+        stateCopy.selectedImage.addedComment = stateCopy.feed[index].addedComment
+
+        this.setState(stateCopy);
+        console.log(this.state.selectedImage.addedComment)
+    }
+
+    addCommentHandler = (post) => {
+        let index = this.state.feed.findIndex(postLiked => postLiked.id === post.id);
+        var stateCopy = Object.assign({}, this.state);
+        stateCopy.feed[index].comments.push(post.addedComment);
+        stateCopy.feed[index].addedComment = '';
+        stateCopy.selectedImage.comments = stateCopy.feed[index].comments
         this.setState(stateCopy);
     }
 
@@ -317,20 +340,34 @@ class Profile extends Component {
                                                 <Typography style={{ color: '#4dabf5', marginLeft: '5px' }} component="p" >
                                                     {this.state.tags}
                                                 </Typography>
+                                                <div className="comments-section">
                                                 {this.state.selectedImage.comments.map((comment, i) => (
                                                     <Typography key={i} component="p" style={{ fontWeight: 'bold' }}>{this.state.username} :&nbsp;{comment}</Typography>
                                                 ))}
+                                                </div>
                                             </div>
                                             <div>
                                                 <div className="row">
-                                                <Typography component="p" style={{ fontWeight: 'bold' }}>
-                                                    <IconButton aria-label="Add to favorites" onClick={() => this.likeHandler(this.state.selectedImage)}>
-                                                        {this.state.selectedImage.isLiked && <FavoriteIconFill style={{ color: '#F44336' }} />}
-                                                        {!this.state.selectedImage.isLiked && <FavoriteIconBorder />}
-                                                    </IconButton>
-                                                   
+                                                    <Typography component="p" style={{ fontWeight: 'bold' }}>
+                                                        <IconButton aria-label="Add to favorites" onClick={() => this.likeHandler(this.state.selectedImage)}>
+                                                            {this.state.selectedImage.isLiked && <FavoriteIconFill style={{ color: '#F44336' }} />}
+                                                            {!this.state.selectedImage.isLiked && <FavoriteIconBorder />}
+                                                        </IconButton>
+
                                                         {this.state.selectedImage.likes} likes
                                                     </Typography>
+                                                </div>
+                                                <div className="row addCommentSection">
+                                                    <FormControl style={{ flexGrow: 1 }}>
+                                                        <InputLabel htmlFor="addComment">Add a comment</InputLabel>
+                                                        <Input id="addComment" value={this.state.selectedImage.addedComment} onChange={(e) => this.typeCommentHandler(e, this.state.selectedImage)} />
+                                                    </FormControl>
+                                                    <FormControl>
+                                                        <Button onClick={() => this.addCommentHandler(this.state.selectedImage)}
+                                                            variant="contained" color="primary">
+                                                            ADD
+                                                        </Button>
+                                                    </FormControl>
                                                 </div>
                                             </div>
                                         </div>
