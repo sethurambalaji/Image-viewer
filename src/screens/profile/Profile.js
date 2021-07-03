@@ -16,21 +16,32 @@ import { InputLabel } from '@material-ui/core';
 import { FormControl } from '@material-ui/core';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import { Button } from '@material-ui/core';
+import Container from '@material-ui/core/Container';
 const styles = theme => ({
     avatar: {
         width: theme.spacing(15),
         height: theme.spacing(15),
         backgroundColor: "red",
     },
-    GridList:{
-        margin: theme.spacing(0,15),
+    GridList: {
+        margin: theme.spacing(0, 15),
     },
-    GridListTile:{
+    GridListTile: {
         '&:hover': {
             cursor: 'pointer',
-        }    
+        }
     },
-    openedImageObjModal: { display: 'flex', justifyContent: 'center', alignItems: 'center' }
+    openedImageObjModal: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: "white-smoke"
+    },
+    openedImageObjContainer: { display: 'flex', flexDirection: 'row', backgroundColor: "#fff", width: '70%', height: '70%' },
+    openedImageObjContainerRow1: { width: '50%', padding: 10 },
+    openedImageObjContainerRow2: { display: 'flex', flexDirection: 'column', width: '50%', padding: 10 },
+    openedImageObjContainerRow21: { borderBottom: '2px solid #c0c0c0', display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' },
+    openedImageObjContainerRow22: { display: 'flex', height: '100%', flexDirection: 'column', justifyContent: 'space-between' }
 });
 
 class Profile extends Component {
@@ -46,10 +57,11 @@ class Profile extends Component {
             tags: "#upgrad #reactjs #imageviewer #user #image",
             feed: [],
             isloggedIn: window.sessionStorage.getItem("access-token") === null ? false : true,
-            nameEditModalOpen:false,
-            nameEditModalClose:true,
-            nameRequireLabel:"hide",
-            imageDetailsModal:false,
+            nameEditModalOpen: false,
+            nameEditModalClose: true,
+            nameRequireLabel: "hide",
+            imageDetailsModal: false,
+            selectedImage: null,
         }
     }
 
@@ -92,7 +104,7 @@ class Profile extends Component {
                         JSON.parse(this.responseText)
                     ),
                 });
-               
+
                 that.setPostDetails(that.state.imageDetailsMaster);
             }
 
@@ -145,14 +157,14 @@ class Profile extends Component {
 
 
     closeEditNameModalHandler = () => {
-        this.setState({newFullName:''})
-        this.setState({nameRequireLabel:"hide"})
+        this.setState({ newFullName: '' })
+        this.setState({ nameRequireLabel: "hide" })
         this.setState({ nameEditModalOpen: false, nameEditModalClose: true })
     }
 
     editNameFieldChangeHandler = (e) => {
-       this.setState({ newFullName: e.target.value })
-        
+        this.setState({ newFullName: e.target.value })
+
     }
 
     editNameUpdateButtonHandler = () => {
@@ -172,15 +184,16 @@ class Profile extends Component {
 
     }
 
-    postClickHandler = (post) =>{
+    postClickHandler = (post) => {
         console.log("postClickHandler");
         console.log(post.media_url);
-        this.setState({imageDetailsModal:true})
+        this.setState({ imageDetailsModal: true })
+        this.setState({ selectedImage: post })
 
     }
 
     closeImageDetailsModal = () => {
-        this.setState({imageDetailsModal:false})
+        this.setState({ imageDetailsModal: false })
     }
 
     render() {
@@ -246,25 +259,59 @@ class Profile extends Component {
                         </Grid>
                     </div>
                     <div className="imagePosts">
-                    <GridList cols={3} cellHeight={300} spacing={1}>
-                        {
+                        <GridList cols={3} cellHeight={300} spacing={1}>
+                            {
 
-                            this.state.feed.map((post) => (
+                                this.state.feed.map((post) => (
 
-                                <GridListTile key={post.id} alt={post.caption} onClick={() => this.postClickHandler(post)}>
-                                    <img src={post.media_url} alt={post.caption}></img>
-                                </GridListTile>
-                            ))
-                        }
-                    </GridList>
-                    <Modal
-                       open={this.state.imageDetailsModal}
-                       onClose={this.closeImageDetailsModal}
-                       className={classes.openedImageObjModal}
-                       >
-                       <div>Image Details Modal</div>
+                                    <GridListTile key={post.id} alt={post.caption} onClick={() => this.postClickHandler(post)}>
+                                        <img src={post.media_url} alt={post.caption}></img>
+                                    </GridListTile>
+                                ))
+                            }
+                        </GridList>
+                        {(this.state.selectedImage !== null) ?
+                            <Modal
+                                open={this.state.imageDetailsModal}
+                                onClose={this.closeImageDetailsModal}
+                                className={classes.openedImageObjModal}
+                            >
+                                <div className={classes.openedImageObjContainer}>
 
-                       </Modal>
+
+                                    <div className={classes.openedImageObjContainerRow1}>
+                                        <img style={{ cursor: 'pointer', height: '100%', width: '100%' }}
+                                            src={this.state.selectedImage.media_url}
+                                            alt={this.state.selectedImage.caption} />
+                                    </div>
+
+                                    <div className={classes.openedImageObjContainerRow2}>
+                                        <div className={classes.openedImageObjContainerRow21}>
+                                            <Avatar
+                                                alt="profile-image"
+                                                src={require("../../assets/profileImage.png")}
+                                                style={{ cursor: 'pointer', width: "50px", height: "50px", margin: '10px' }} />
+                                            <Typography component="p" style={{ fontWeight: 'bold' }}>
+                                                {this.state.username}
+                                            </Typography>
+                                        </div>
+                                        <div className={classes.openedImageObjContainerRow22}>
+                                            <div>
+                                                <Typography component="p" style={{ fontWeight: 'bold', marginLeft: '5px', paddingTop: '8px' }}>
+                                                 {this.state.selectedImage.caption}
+                                                </Typography>
+                                                <Typography style={{ color: '#4dabf5', marginLeft: '5px' }} component="p" >
+                                                    {this.state.tags}
+                                                </Typography>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </Modal>
+                            :
+                            null}
+
                     </div>
                 </div>
 
